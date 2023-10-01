@@ -1,5 +1,6 @@
 package com.example.gifapp
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,12 +9,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.example.gifapp.databinding.ItemGifBinding
-import com.example.gifapp.ui.home.GifUiModel
+import com.example.gifapp.ui.home.GifUiItem
 
 class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var gifs: List<GifUiModel> = mutableListOf()
+    private var gifs: List<GifUiItem> = mutableListOf()
 
-    fun setData(gifs: List<GifUiModel>) {
+    fun setData(gifs: List<GifUiItem>) {
+        Log.i("mytag", "ADAPTER setData: gifs = ${gifs}")
+
         this.gifs = gifs
         notifyDataSetChanged()
     }
@@ -34,13 +37,14 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         private val binding: ItemGifBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(gifItem: GifUiModel) {
+        fun bind(gifItem: GifUiItem) {
             val requestOptions = RequestOptions().apply {
 //                transform(CenterCrop(), RoundedCorners(12))
                 transform(RoundedCorners(12))
             }
+            Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.gifLink}")
             with(binding) {
-                gifTitle.text = gifItem.gifName
+                gifTitle.text = gifItem.title
                 Glide.with(binding.root)
                     .load(gifItem.gifLink)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)

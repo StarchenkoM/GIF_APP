@@ -1,6 +1,6 @@
 package com.example.gifapp.ui.home
 
-data class GifUiModel(
-    val gifName: String = "",
+data class GifUiItem(
+    val title: String = "",
     val gifLink: String = "",
 )

@@ -1,9 +1,14 @@
 package com.example.gifapp.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gifapp.GifAdapter
+import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -48,8 +54,8 @@ class HomeFragment : Fragment() {
 
 
     private fun setupUiComponents() {
-        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 3)
-        binding.recyclerGif.adapter = adapter
+        initAdapter()
+        initSearch()
     }
 
     private fun setupObservers() {
@@ -57,10 +63,49 @@ class HomeFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.onEach { uiState ->
                     binding.loaderGroup.isVisible = uiState.isLoading
+                    Log.i("mytag", "FRAGMENT :onEach() gifs = ${uiState.gifs.map { it.title }}")
                     adapter.setData(uiState.gifs)
                 }.launchIn(this)
             }
         }
+    }
+
+    private fun initAdapter() {
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.recyclerGif.adapter = adapter
+    }
+
+    private fun initSearch() {
+        val searchView = binding.searchHome
+        setSearchElementColors(searchView)
+        setOnQueryTextListener(searchView)
+    }
+
+    private fun setSearchElementColors(searchView: SearchView) {
+        val elementsColor = ContextCompat.getColor(requireContext(), R.color.text2)
+
+        val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
+        val closeIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
+        val searchEditText =
+            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+
+        searchEditText.setTextColor(elementsColor)
+        searchEditText.setHintTextColor(elementsColor)
+        searchIcon.setColorFilter(elementsColor)
+        closeIcon.setColorFilter(elementsColor)
+    }
+
+    private fun setOnQueryTextListener(searchView: SearchView) {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let { viewModel.loadGifsByQuery(it) }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
     }
 
 }

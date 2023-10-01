@@ -1,32 +1,54 @@
 package com.example.gifapp
 
-import com.example.gifapp.ui.home.GifUiModel
+import android.util.Log
+import com.example.gifapp.ui.home.GifUiItem
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 class GifsRepositoryImpl @Inject constructor(
-//    private val gifsNetSource: GifsNetSource,
-//    private val gifsDao: GifsDao,
-//    private val mapper: GifsMapper,
+    private val gifsNetSource: GifsNetSource,
+    private val gifsDao: GifsDao,
+    private val mapper: GifsMapper,
 
-) : GifsRepository {
-    override fun getGifs(): Flow<List<GifUiModel>> {
-        val testGifs = mutableListOf<GifUiModel>()
-        for (i in 0..25) {
-            val gifImage01 =
-                "https://th.bing.com/th/id/R.ab4176a242be1235baf6f8f309346a80?rik=xJ09NPURCmGn4w&pid=ImgRaw&r=0"
-            val gifImage02 =
-                "https://th.bing.com/th/id/OIP.llFY_2VlxrXU16pmqrvHggHaLH?pid=ImgDet&rs=1"
-            val image = if (i % 2 == 0) gifImage01 else gifImage02
-            testGifs.add(
-                GifUiModel(
-                    gifName = "Name_$i",
-                    gifLink = image
-                )
-            )
+    ) : GifsRepository {
+    override suspend fun getGifs(): Flow<List<GifUiItem>> {
+
+        val result = gifsNetSource.getGifsFromNet().onEach {
+            Log.i("mytag", "REPO getGifs: netItems.size = ${it.size}")
+        }.map {
+            val t = mutableListOf<GifUiItem>()
+            val temp = it.forEach {
+                t.add(mapper.convertNetToUiItem(it))
+            }
+            Log.i("mytag", "REPO getGifs: uiItems.size = ${t.size}")
+
+            t
         }
 
-        return flowOf(testGifs.toList())
+        Log.i("mytag", "REPO getGifs: result = ${result.first()}")
+
+        return result
+    }
+
+    override suspend fun getGifs(query: String): Flow<List<GifUiItem>> {
+        val result = gifsNetSource.getGifsFromNet(query).onEach {
+            Log.i("mytag", "REPO getGifs: netItems.size = ${it.size}")
+        }.map {
+            val t = mutableListOf<GifUiItem>()
+            val temp = it.forEach {
+                t.add(mapper.convertNetToUiItem(it))
+            }
+            Log.i("mytag", "REPO getGifs: uiItems.size = ${t.size}")
+
+            t
+        }
+
+        Log.i("mytag", "REPO getGifs: result = ${result.first()}")
+
+        return result
     }
 }

@@ -1,8 +1,8 @@
 package com.example.gifapp.ui.home
 
 data class GifState(
-    val gifs: List<GifUiModel> = listOf(),
+    val gifs: List<GifUiItem> = listOf(),
     val isLoading: Boolean = false,
-    val currentGif: GifUiModel = GifUiModel(),
+    val currentGif: GifUiItem = GifUiItem(),
     val emptyGifWarningEvent: Unit? = null,
 )
