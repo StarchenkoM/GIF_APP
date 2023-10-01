@@ -98,7 +98,7 @@ class HomeFragment : Fragment() {
     private fun setOnQueryTextListener(searchView: SearchView) {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { viewModel.loadGifsByQuery(it) }
+                query?.let { viewModel.loadGifs(it) }
                 return false
             }
 

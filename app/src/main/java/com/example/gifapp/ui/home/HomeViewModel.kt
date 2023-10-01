@@ -29,25 +29,8 @@ class HomeViewModel @Inject constructor(
         loadGifs()
     }
 
-    private fun loadGifs() {
-        _uiState.update { it.copy(isLoading = true) }
 
-        viewModelScope.launch(Dispatchers.IO) {
-            delay(1500)
-
-            val testList = getGifsUseCase.getGifs()
-            Log.i("mytag", "VM getGifs: testList.first = ${testList.first().map { it.title }}")
-
-            testList.onEach { gifs ->
-                Log.i("mytag", "VM getGifs:onEach() gifs = ${gifs.map { it.title }}")
-                _uiState.update { it.copy(gifs = gifs) }
-            }.launchIn(this)
-            _uiState.update { it.copy(isLoading = false) }
-        }
-
-    }
-
-    fun loadGifsByQuery(query: String) {
+    fun loadGifs(query: String = "") {
         _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch(Dispatchers.IO) {

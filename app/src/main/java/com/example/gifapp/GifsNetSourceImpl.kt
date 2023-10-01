@@ -3,10 +3,8 @@ package com.example.gifapp
 import android.util.Log
 import com.example.gifapp.api.RetrofitInstance
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 
 class GifsNetSourceImpl : GifsNetSource {
     override suspend fun getGifsFromNet(query: String): Flow<List<GifNetItem>> {
