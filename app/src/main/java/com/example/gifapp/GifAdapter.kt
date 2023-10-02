@@ -12,6 +12,7 @@ import com.example.gifapp.databinding.ItemGifBinding
 import com.example.gifapp.ui.home.GifUiItem
 
 class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    var onItemClicked: ((String) -> Unit)? = null
     private var gifs: List<GifUiItem> = mutableListOf()
 
     fun setData(gifs: List<GifUiItem>) {
@@ -45,11 +46,15 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.gifLink}")
             with(binding) {
                 gifTitle.text = gifItem.title
-                Glide.with(binding.root)
+                Glide.with(root)
                     .load(gifItem.gifLink)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                    .apply(requestOptions)
-                    .into(binding.gifImage)
+                    .apply(requestOptions)
+                    .into(gifImage)
+            }
+
+            binding.itemLayout.setOnClickListener {
+                onItemClicked?.invoke(gifItem.gifLink)
             }
         }
 

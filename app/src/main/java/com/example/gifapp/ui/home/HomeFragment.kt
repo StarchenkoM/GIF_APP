@@ -15,6 +15,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gifapp.GifAdapter
 import com.example.gifapp.R
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private var binding by Delegates.notNull<FragmentHomeBinding>()
     private val viewModel by viewModels<HomeViewModel>()
@@ -52,7 +53,6 @@ class HomeFragment : Fragment() {
         binding.recyclerGif.adapter = null
     }
 
-
     private fun setupUiComponents() {
         initAdapter()
         initSearch()
@@ -65,16 +65,26 @@ class HomeFragment : Fragment() {
                     binding.loaderGroup.isVisible = uiState.isLoading
                     Log.i("mytag", "FRAGMENT :onEach() gifs = ${uiState.gifs.map { it.title }}")
                     adapter.setData(uiState.gifs)
+
+                    if (uiState.navigateToGifDetailsEvent != null) {
+                        val action =
+                            HomeFragmentDirections.actionGifsFragmentToGifDetain(uiState.selectedGifId)
+                        findNavController().navigate(action)
+                        viewModel.consumeNavigateToGifDetailsEvent()
+                    }
+
                 }.launchIn(this)
             }
         }
     }
 
     private fun initAdapter() {
-        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerGif.adapter = adapter
+        adapter.onItemClicked = { gifId -> viewModel.openGif(gifId) }
     }
 
+    //TODO remove?
     private fun initSearch() {
         val searchView = binding.searchHome
         setSearchElementColors(searchView)

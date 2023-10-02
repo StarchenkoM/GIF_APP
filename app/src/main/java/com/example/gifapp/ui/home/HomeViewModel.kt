@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gifapp.GetGifsUseCase
+import com.example.gifapp.NetworkConnectivityObserver
+import com.example.gifapp.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -20,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase,
+    private val connectivityObserver: NetworkConnectivityObserver,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GifState())
@@ -46,4 +49,28 @@ class HomeViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = false) }
         }
     }
+
+    fun openGif(gifId: String) {
+        viewModelScope.launch {
+            val isNetworkConnected = connectivityObserver.observe().first() == Status.Available
+            if (isNetworkConnected) {
+                _uiState.update {
+                    it.copy(
+                        selectedGifId = gifId,
+                        navigateToGifDetailsEvent = Unit
+                    )
+                }
+            } else {
+                _uiState.update { it.copy(gifUnavailableEvent = Unit) }
+            }
+        }
+    }
+
+    fun consumeNavigateToGifDetailsEvent() {
+        _uiState.update {
+            it.copy(navigateToGifDetailsEvent = null)
+        }
+    }
+
+    // TODO: add consume fun's
 }
