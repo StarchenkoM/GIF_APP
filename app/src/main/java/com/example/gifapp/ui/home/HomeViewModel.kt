@@ -1,6 +1,5 @@
 package com.example.gifapp.ui.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gifapp.GetGifsUseCase
@@ -32,37 +31,26 @@ class HomeViewModel @Inject constructor(
         loadGifs()
     }
 
-
     fun loadGifs(query: String = "") {
         _uiState.update { it.copy(isLoading = true) }
 
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1500)
-
-            val testList = getGifsUseCase.getGifs(query)
-            Log.i("mytag", "VM getGifs: testList.first = ${testList.first().map { it.title }}")
-
-            testList.onEach { gifs ->
-                Log.i("mytag", "VM getGifs:onEach() gifs = ${gifs.map { it.title }}")
-                _uiState.update { it.copy(gifs = gifs) }
-            }.launchIn(this)
+            val isNetworkConnected = connectivityObserver.observe().first() == Status.Available
+            if (isNetworkConnected) {
+                delay(1500)
+                getGifsUseCase.getGifs(query).onEach { gifs ->
+                    _uiState.update { it.copy(gifs = gifs) }
+                }.launchIn(this)
+            } else {
+                _uiState.update { it.copy(isLoading = false, gifUnavailableEvent = Unit) }
+            }
             _uiState.update { it.copy(isLoading = false) }
         }
     }
 
     fun openGif(gifId: String) {
         viewModelScope.launch {
-            val isNetworkConnected = connectivityObserver.observe().first() == Status.Available
-            if (isNetworkConnected) {
-                _uiState.update {
-                    it.copy(
-                        selectedGifId = gifId,
-                        navigateToGifDetailsEvent = Unit
-                    )
-                }
-            } else {
-                _uiState.update { it.copy(gifUnavailableEvent = Unit) }
-            }
+            _uiState.update { it.copy(selectedGifId = gifId, navigateToGifDetailsEvent = Unit) }
         }
     }
 
