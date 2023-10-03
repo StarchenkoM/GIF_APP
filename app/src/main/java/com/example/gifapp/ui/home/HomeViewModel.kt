@@ -28,6 +28,7 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<GifState> = _uiState.asStateFlow()
 
     init {
+//                 TODO: JUST ADD RELOAD BUTTON in case if connection was restored
         loadGifs()
     }
 
@@ -42,7 +43,7 @@ class HomeViewModel @Inject constructor(
                     _uiState.update { it.copy(gifs = gifs) }
                 }.launchIn(this)
             } else {
-                _uiState.update { it.copy(isLoading = false, gifUnavailableEvent = Unit) }
+                _uiState.update { it.copy(isLoading = false, connectionLostEvent = Unit) }
             }
             _uiState.update { it.copy(isLoading = false) }
         }
@@ -50,7 +51,11 @@ class HomeViewModel @Inject constructor(
 
     fun openGif(gifId: String) {
         viewModelScope.launch {
-            _uiState.update { it.copy(selectedGifId = gifId, navigateToGifDetailsEvent = Unit) }
+            if (connectivityObserver.observe().first() == Status.Available) {
+                _uiState.update { it.copy(selectedGifId = gifId, navigateToGifDetailsEvent = Unit) }
+            } else {
+                _uiState.update { it.copy(cannotOpenGifEvent = Unit) }
+            }
         }
     }
 
@@ -58,6 +63,14 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(navigateToGifDetailsEvent = null)
         }
+    }
+
+    fun consumeConnectionLostEvent() {
+        _uiState.update { it.copy(connectionLostEvent = null) }
+    }
+
+    fun consumeCannotOpenGifEvent() {
+        _uiState.update { it.copy(cannotOpenGifEvent = null) }
     }
 
     // TODO: add consume fun's

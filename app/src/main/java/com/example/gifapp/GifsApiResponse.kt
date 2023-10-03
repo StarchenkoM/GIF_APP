@@ -44,7 +44,9 @@ data class GifImage(
 )
 
 data class Images(
-    @SerializedName("original")
+//    @SerializedName("original")
+//    @SerializedName("fixed_height")
+    @SerializedName("fixed_height_downsampled")
     val original: ImageDetails,
     // Add other relevant image details as needed
 )

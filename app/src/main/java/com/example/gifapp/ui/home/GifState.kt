@@ -7,5 +7,6 @@ data class GifState(
     val selectedGifId: String = "",
     val emptyGifWarningEvent: Unit? = null,
     val navigateToGifDetailsEvent: Unit? = null,
-    val gifUnavailableEvent: Unit? = null,
+    val cannotOpenGifEvent: Unit? = null,
+    val connectionLostEvent: Unit? = null,
 )

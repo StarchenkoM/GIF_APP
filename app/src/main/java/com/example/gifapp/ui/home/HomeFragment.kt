@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -64,7 +65,21 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.uiState.onEach { uiState ->
                     binding.loaderGroup.isVisible = uiState.isLoading
                     Log.i("mytag", "FRAGMENT :onEach() gifs = ${uiState.gifs.map { it.title }}")
-                    adapter.setData(uiState.gifs)
+                    if (uiState.gifs.isNotEmpty()) {
+                        handleGifsUnavailableText(isVisible = false)
+                        adapter.setData(uiState.gifs)
+                    }
+
+//                    handleGifsUnavailableText(isVisible = uiState.connectionLostEvent != null)
+                    if (uiState.connectionLostEvent != null) {
+                        handleGifsUnavailableText(isVisible = true)
+                        viewModel.consumeConnectionLostEvent()
+                    }
+
+                    if (uiState.cannotOpenGifEvent != null) {
+                        showWarningDialog()
+                        viewModel.consumeCannotOpenGifEvent()
+                    }
 
                     if (uiState.navigateToGifDetailsEvent != null) {
                         val action =
@@ -75,6 +90,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 }.launchIn(this)
             }
+        }
+    }
+
+    private fun showWarningDialog() {
+        AlertDialog.Builder(requireContext())
+            .setCancelable(true)
+            .setTitle("Warning")
+            .setMessage("Gif cannot be open. Please check your network connection")
+            .setIcon(R.drawable.ic_warning)
+            .setPositiveButton("OK", null)
+            .create()
+            .show()
+    }
+
+    private fun handleGifsUnavailableText(isVisible: Boolean) {
+        with(binding) {
+            gifsLoadingErrorText.isVisible = isVisible
+            gifsLoadingErrorText.text = "Gifs loading error :( \n Please try later"
         }
     }
 
