@@ -17,4 +17,10 @@ interface GifsDao {
 
     @Query("SELECT * FROM $GIFS_TABLE_NAME")
     fun getDBGifs(): Flow<List<GifDBEntity>>
+
+    @Query("DELETE FROM $GIFS_TABLE_NAME")
+    fun deleteAllGifs(): Int
+
+    @Query("DELETE FROM $GIFS_TABLE_NAME WHERE id =:id")
+    fun deleteGif(id:String): Int
 }

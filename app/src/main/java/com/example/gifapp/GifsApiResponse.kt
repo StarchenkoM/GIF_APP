@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName
 
 data class GifsApiResponse(
     @SerializedName("data")
-    val gifs: List<GifImage>,
+    val gifs: List<GifNetItem>,
 )
 
-data class GifImage(
+data class GifNetItem(
     @SerializedName("id")
     val id: String,
     @SerializedName("title")
@@ -20,7 +20,7 @@ data class Images(
 //    @SerializedName("original")
 //    @SerializedName("fixed_height")
     @SerializedName("fixed_height_downsampled")
-    val original: ImageDetails,
+    val imageDetails: ImageDetails,
 )
 
 data class ImageDetails(

@@ -4,5 +4,7 @@ import com.example.gifapp.ui.home.GifUiItem
 import kotlinx.coroutines.flow.Flow
 
 interface GetGifsUseCase {
-    suspend fun getGifs(query: String): Flow<List<GifUiItem>>
+    suspend fun getGifs(query: String)
+    suspend fun deleteGifs()
+    val gifFlow: Flow<List<GifUiItem>>
 }

@@ -7,14 +7,14 @@ class GifsMapperImpl : GifsMapper {
         return GifDBEntity(
             id = item.id,
             title = item.title,
-            link = item.link,
+            link = item.images.imageDetails.url,
         )
     }
 
     override fun mapToUiItem(item: GifNetItem): GifUiItem {
         return GifUiItem(
             title = item.title,
-            link = item.link,
+            link = item.images.imageDetails.url,
         )
     }
 
