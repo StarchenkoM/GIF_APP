@@ -20,6 +20,7 @@ class GifsRepositoryImpl @Inject constructor(
     private val gifsNetSource: GifsNetSource,
     private val gifsDao: GifsDao,
     private val mapper: GifsMapper,
+    // TODO: add result observer
 ) : GifsRepository {
 
     override suspend fun deleteSomeGifs() {
@@ -46,20 +47,16 @@ class GifsRepositoryImpl @Inject constructor(
         }
 
 
-
     override suspend fun getGifs(query: String) {
-//        deleteAll()
         Log.i("mytag*", "REPO getGifs: START")
-        val d = gifsNetSource.getGifsFromNet(query)
-
-        d.onSuccess { netItems ->
+        gifsNetSource.getGifsFromNet(query).onSuccess { netItems ->
             if (netItems.isNotEmpty()) {
                 netItems.forEach { netItem ->
                     gifsDao.upsertGif(mapper.mapToDataBaseItem(netItem))
                 }
             }
         }.onFailure {
-
+            // TODO:   handle result observer
         }
 
     }
