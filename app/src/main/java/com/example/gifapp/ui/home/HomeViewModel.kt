@@ -6,6 +6,7 @@ import com.example.gifapp.GetGifsUseCase
 import com.example.gifapp.NetworkConnectivityObserver
 import com.example.gifapp.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

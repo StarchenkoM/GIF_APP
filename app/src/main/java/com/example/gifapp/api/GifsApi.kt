@@ -18,7 +18,6 @@ interface GifsApi {
 //    ): Flow<GifsApiResponse>
     ): Response<GifsApiResponse>
 
-
     companion object {
         const val DEFAULT_QUERY = "dog"
         const val DEFAULT_LIMIT = 11

@@ -43,18 +43,18 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //                transform(CenterCrop(), RoundedCorners(12))
                 transform(RoundedCorners(12))
             }
-            Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.gifLink}")
+            Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.link}")
             with(binding) {
                 gifTitle.text = gifItem.title
                 Glide.with(root)
-                    .load(gifItem.gifLink)
+                    .load(gifItem.link)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .apply(requestOptions)
                     .into(gifImage)
             }
 
             binding.itemLayout.setOnClickListener {
-                onItemClicked?.invoke(gifItem.gifLink)
+                onItemClicked?.invoke(gifItem.link)
             }
         }
 

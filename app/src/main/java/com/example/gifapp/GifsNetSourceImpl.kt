@@ -17,32 +17,28 @@ class GifsNetSourceImpl : GifsNetSource {
         }
         val body = response.body()
 
-        Log.i(
-            "mytag",
-            "NET_SOURCE getGifsFromNet: response.isSuccessful = ${response.isSuccessful} && body != null ${body != null}"
-        )
+        Log.i("mytag", "NET_SOURCE getGifsFromNet: response.isSuccessful = ${response.isSuccessful} && body != null ${body != null}")
+
+
+        val r = kotlin.runCatching {
+            response.body()
+        }.onSuccess {
+
+        }.onFailure {
+
+        }
+
         return if (response.isSuccessful && body != null) {
             val res = body.gifs.map {
                 GifNetItem(
-                    gifName = it.title,
-                    gifLink = it.images.original.url
+                    id = it.id,
+                    title = it.title,
+                    link = it.images.original.url
                 )
             }
-            Log.i(
-                "mytag",
-                "NET_SOURCE getGifsFromNet: res =${res.size} res.titles = ${
-                    res.map {
-                        it.gifName.substring(
-                            0,
-                            3
-                        )
-                    }
-                } \n")
-
             flowOf(res)
         } else {
             Log.i("mytag", "NET_SOURCE getGifsFromNet: EMPTY FLOW")
-
             emptyFlow()
         }
     }
