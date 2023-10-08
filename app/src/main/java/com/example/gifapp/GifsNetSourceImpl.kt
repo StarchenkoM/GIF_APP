@@ -16,6 +16,7 @@ class GifsNetSourceImpl : GifsNetSource {
             }
             Log.i("mytag*", "NET_SOURCE NET: END")
             response.body()?.gifs ?: emptyList()
+//            emptyList()
         }
     }
 

@@ -72,37 +72,43 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 viewModel.uiState.onEach { uiState ->
 
                     Log.i("mytag**", "setupObservers: emptyGifsEvent = ${uiState.emptyGifsEvent}")
-                    Log.i("mytag**", "setupObservers: gifsLoadingErrorEvent = ${uiState.gifsLoadingErrorEvent}")
-                    Log.i("mytag**", "setupObservers: emptyGifsEvent || gifsLoadingErrorEvent = ${uiState.emptyGifsEvent != null || uiState.gifsLoadingErrorEvent != null}")
-                    binding.loaderGroup.isVisible = uiState.isLoading
-                    binding.searchHome.isGone = !uiState.isNetworkConnected
-                    binding.connectionLostWarning.isGone = uiState.isNetworkConnected
-                    binding.gifsLoadingErrorText.isGone = !(uiState.emptyGifsEvent != null || uiState.gifsLoadingErrorEvent != null)
-                    binding.recyclerGif.isVisible = (uiState.emptyGifsEvent == null && uiState.gifsLoadingErrorEvent == null)
+
+                    setViewsVisibility(uiState)
                     adapter.setData(uiState.gifs)
 
-                    if (uiState.cannotOpenGifEvent != null) {
-                        showWarningDialog()
-                        viewModel.consumeCannotOpenGifEvent()
+                    when {
+                        uiState.isCannotOpenGifEvent -> manageDialogDisplaying()
+                        uiState.isEmptyGifsEvent -> displayMessage("No gifs by this request")
+                        uiState.isGifsLoadingErrorEvent -> displayMessage("Gifs loading error :( \n Please try later")
+                        uiState.isNavigateToGifDetailsEvent -> manageNavigationToGifDetails(uiState.selectedGifId)
                     }
-
-                    if (uiState.emptyGifsEvent != null) {
-                        displayMessage("No gifs by this request")
-                    }
-
-                    if (uiState.gifsLoadingErrorEvent != null) {
-                        displayMessage("Gifs loading error :( \n Please try later")
-                    }
-
-                    if (uiState.navigateToGifDetailsEvent != null) {
-                        val action =
-                            HomeFragmentDirections.actionGifsFragmentToGifDetain(uiState.selectedGifId)
-                        findNavController().navigate(action)
-                        viewModel.consumeNavigateToGifDetailsEvent()
-                    }
-
                 }.launchIn(this)
             }
+        }
+    }
+
+    private fun manageNavigationToGifDetails(gifId: String) {
+        navigateToGifDetails(gifId)
+        viewModel.consumeNavigateToGifDetailsEvent()
+    }
+
+    private fun navigateToGifDetails(gifId: String) {
+        val direction = HomeFragmentDirections.actionGifsFragmentToGifDetain(gifId)
+        findNavController().navigate(direction)
+    }
+
+    private fun manageDialogDisplaying() {
+        showWarningDialog()
+        viewModel.consumeCannotOpenGifEvent()
+    }
+
+    private fun setViewsVisibility(uiState: GifState) {
+        with(binding) {
+            loaderGroup.isVisible = uiState.isLoading
+            searchHome.isGone = !uiState.isNetworkConnected
+            connectionLostWarning.isGone = uiState.isNetworkConnected
+            gifsLoadingErrorText.isGone = uiState.isLoadingErrorGone
+            recyclerGif.isVisible = uiState.isLoadingErrorGone
         }
     }
 
