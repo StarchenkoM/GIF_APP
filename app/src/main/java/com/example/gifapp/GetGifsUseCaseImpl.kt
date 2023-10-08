@@ -9,13 +9,14 @@ class GetGifsUseCaseImpl @Inject constructor(
     private val gifsRepository: GifsRepository
 ) : GetGifsUseCase {
 
-    override suspend fun getGifs(query: String) {
-        gifsRepository.getGifs(query)
+    override suspend fun getGifs(query: String): GifsFetchingResponse {
+        return gifsRepository.getGifs(query)
     }
 
     override suspend fun deleteGifs() {
         Log.i("mytag**", "USE_CASE: deleteGifs")
-        gifsRepository.deleteSomeGifs()
+//        gifsRepository.deleteSomeGifs()
+        gifsRepository.deleteAllGifs()
     }
 
     override val gifFlow: Flow<List<GifUiItem>>

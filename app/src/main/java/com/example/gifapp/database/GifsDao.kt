@@ -15,6 +15,9 @@ interface GifsDao {
     @Upsert
     suspend fun upsertGif(gif: GifDBEntity)
 
+    @Upsert
+    suspend fun upsertGifs(gifs: List<GifDBEntity>)
+
     @Query("SELECT * FROM $GIFS_TABLE_NAME")
     fun getDBGifs(): Flow<List<GifDBEntity>>
 
@@ -22,5 +25,5 @@ interface GifsDao {
     fun deleteAllGifs(): Int
 
     @Query("DELETE FROM $GIFS_TABLE_NAME WHERE id =:id")
-    fun deleteGif(id:String): Int
+    fun deleteGif(id: String): Int
 }

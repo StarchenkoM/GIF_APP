@@ -1,30 +1,23 @@
 package com.example.gifapp
 
 import android.util.Log
+import com.example.gifapp.GifsFetchingResponse.EmptyResponseError
+import com.example.gifapp.GifsFetchingResponse.GifsFetchingSuccess
+import com.example.gifapp.GifsFetchingResponse.LoadingError
 import com.example.gifapp.database.GifsDao
 import com.example.gifapp.ui.home.GifUiItem
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class GifsRepositoryImpl @Inject constructor(
     private val gifsNetSource: GifsNetSource,
     private val gifsDao: GifsDao,
     private val mapper: GifsMapper,
-    // TODO: add result observer
 ) : GifsRepository {
 
     override suspend fun deleteSomeGifs() {
-        Log.i("mytag*", "REPO deleteAll: START")
+        Log.i("mytag*", "REPO deleteSomeGifs: START")
         val deletionList = listOf(
             "3o7527pa7qs9kCG78A",
             "4Zo41lhzKt6iZ8xff9",
@@ -36,9 +29,14 @@ class GifsRepositoryImpl @Inject constructor(
         deletionList.forEach {
             gifsDao.deleteGif(it)
         }
-//        gifsDao.deleteAllGifs()
-        Log.i("mytag*", "REPO deleteAll: END")
+        Log.i("mytag*", "REPO deleteSomeGifs: END")
 
+    }
+
+    override suspend fun deleteAllGifs() {
+        Log.i("mytag*", "REPO deleteAllGifs: START")
+        gifsDao.deleteAllGifs()
+        Log.i("mytag*", "REPO deleteAllGifs: END")
     }
 
     override val gifFlow: Flow<List<GifUiItem>>
@@ -46,20 +44,35 @@ class GifsRepositoryImpl @Inject constructor(
             dbList.map { mapper.mapToUiItem(it) }
         }
 
-
-    override suspend fun getGifs(query: String) {
+    override suspend fun getGifs(query: String): GifsFetchingResponse {
         Log.i("mytag*", "REPO getGifs: START")
         gifsNetSource.getGifsFromNet(query).onSuccess { netItems ->
-            if (netItems.isNotEmpty()) {
-                netItems.forEach { netItem ->
-                    gifsDao.upsertGif(mapper.mapToDataBaseItem(netItem))
-                }
-            }
-        }.onFailure {
-            // TODO:   handle result observer
+            return handleSuccessResponse(netItems)
         }
-
+        return LoadingError
     }
 
+    private suspend fun handleSuccessResponse(netItems: List<GifNetItem>): GifsFetchingResponse {
+        return if (netItems.isEmpty()) {
+            EmptyResponseError
+        } else {
+            upsertGifsToDB(netItems.mapToDataBaseEntities())
+        }
+    }
 
+    private suspend fun upsertGifsToDB(bDEntities: List<GifDBEntity>): GifsFetchingResponse {
+        return try {
+            gifsDao.upsertGifs(bDEntities)
+            GifsFetchingSuccess
+        } catch (ex: Exception) {
+            LoadingError
+        }
+    }
+
+}
+
+sealed class GifsFetchingResponse {
+    data object GifsFetchingSuccess : GifsFetchingResponse()
+    data object EmptyResponseError : GifsFetchingResponse()
+    data object LoadingError : GifsFetchingResponse()
 }

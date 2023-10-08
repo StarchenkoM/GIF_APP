@@ -3,6 +3,7 @@ package com.example.gifapp
 import com.example.gifapp.ui.home.GifUiItem
 
 class GifsMapperImpl : GifsMapper {
+    // TODO: use extensions?
     override fun mapToDataBaseItem(item: GifNetItem): GifDBEntity {
         return GifDBEntity(
             id = item.id,

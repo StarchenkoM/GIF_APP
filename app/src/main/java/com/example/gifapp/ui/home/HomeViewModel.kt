@@ -5,18 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gifapp.GetGifsUseCase
 import com.example.gifapp.NetworkConnectivityObserver
+import com.example.gifapp.GifsFetchingResponse.EmptyResponseError
+import com.example.gifapp.GifsFetchingResponse.LoadingError
 import com.example.gifapp.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -33,42 +31,46 @@ class HomeViewModel @Inject constructor(
 
     private val gifFlow = getGifsUseCase.gifFlow.onEach { gifs ->
         Log.i("mytag**", "VM: gifFlow gifs.size = ${gifs.size}")
+        if (gifs.isEmpty()) {
+            loadGifs()
+        }
         _uiState.update { it.copy(gifs = gifs) }
     }
 
     private val connectivityFlow = connectivityObserver.observe()
-//        .map { it == Status.Available }
-        .onEach { isNetworkConnected ->
-            Log.i(
-                "mytag**",
-                "VM: connectivityFlow isNetworkConnected = ${isNetworkConnected == Status.Available}"
-            )
-            if (isNetworkConnected == Status.Available) {
+        .onEach { connectionStatus ->
+            if (isNetworkRestored(connectionStatus)) {
                 loadGifs()
-                _uiState.update { it.copy(isNetworkConnected = true) }
-            } else {
-                _uiState.update { it.copy(isLoading = false, connectionLostEvent = Unit) }
             }
-
+            _uiState.update { it.copy(isNetworkConnected = connectionStatus == Status.Available) }
         }
+
+    private fun isNetworkRestored(connectionStatus: Status) =
+        connectionStatus == Status.Available && !_uiState.value.isNetworkConnected
 
 
     init {
-//                 TODO: JUST ADD RELOAD BUTTON in case if connection was restored
         gifFlow.launchIn(viewModelScope)
         connectivityFlow.launchIn(viewModelScope)
-//        loadGifs()
     }
 
     fun loadGifs(query: String = "") {
-        _uiState.update { it.copy(isLoading = true) }
-
         viewModelScope.launch(Dispatchers.IO) {
-            delay(1500)
-            getGifsUseCase.getGifs(query)
-
+            _uiState.update {
+                it.copy(isLoading = true, emptyGifsEvent = null, gifsLoadingErrorEvent = null)
+            }
+            delay(1500)// TODO: remove
+            when (getGifsUseCase.getGifs(query)) {
+                is EmptyResponseError -> _uiState.update { it.copy(emptyGifsEvent = Unit) }
+                is LoadingError -> _uiState.update { it.copy(gifsLoadingErrorEvent = Unit) }
+                else -> {}
+            }
             _uiState.update { it.copy(isLoading = false) }
-            delay(5000)
+        }
+    }
+
+    fun deleteAllGifs() {
+        viewModelScope.launch(Dispatchers.IO) {
             getGifsUseCase.deleteGifs()
         }
     }
@@ -84,13 +86,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun consumeNavigateToGifDetailsEvent() {
-        _uiState.update {
-            it.copy(navigateToGifDetailsEvent = null)
-        }
-    }
-
-    fun consumeConnectionLostEvent() {
-        _uiState.update { it.copy(connectionLostEvent = null) }
+        _uiState.update { it.copy(navigateToGifDetailsEvent = null) }
     }
 
     fun consumeCannotOpenGifEvent() {

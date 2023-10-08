@@ -10,6 +10,7 @@ import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -33,6 +34,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var binding by Delegates.notNull<FragmentHomeBinding>()
     private val viewModel by viewModels<HomeViewModel>()
     private val adapter = GifAdapter()
+    private var dialog: AlertDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,28 +59,39 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setupUiComponents() {
         initAdapter()
         initSearch()
+
+        // TODO: remove
+        binding.deleteGifs.setOnClickListener {
+            viewModel.deleteAllGifs()
+        }
     }
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.onEach { uiState ->
-                    binding.loaderGroup.isVisible = uiState.isLoading
-                    Log.i("mytag", "FRAGMENT :onEach() gifs = ${uiState.gifs.map { it.title }}")
-                    if (uiState.gifs.isNotEmpty()) {
-                        handleGifsUnavailableText(isVisible = false)
-                        adapter.setData(uiState.gifs)
-                    }
 
-//                    handleGifsUnavailableText(isVisible = uiState.connectionLostEvent != null)
-                    if (uiState.connectionLostEvent != null) {
-                        handleGifsUnavailableText(isVisible = true)
-                        viewModel.consumeConnectionLostEvent()
-                    }
+                    Log.i("mytag**", "setupObservers: emptyGifsEvent = ${uiState.emptyGifsEvent}")
+                    Log.i("mytag**", "setupObservers: gifsLoadingErrorEvent = ${uiState.gifsLoadingErrorEvent}")
+                    Log.i("mytag**", "setupObservers: emptyGifsEvent || gifsLoadingErrorEvent = ${uiState.emptyGifsEvent != null || uiState.gifsLoadingErrorEvent != null}")
+                    binding.loaderGroup.isVisible = uiState.isLoading
+                    binding.searchHome.isGone = !uiState.isNetworkConnected
+                    binding.connectionLostWarning.isGone = uiState.isNetworkConnected
+                    binding.gifsLoadingErrorText.isGone = !(uiState.emptyGifsEvent != null || uiState.gifsLoadingErrorEvent != null)
+                    binding.recyclerGif.isVisible = (uiState.emptyGifsEvent == null && uiState.gifsLoadingErrorEvent == null)
+                    adapter.setData(uiState.gifs)
 
                     if (uiState.cannotOpenGifEvent != null) {
                         showWarningDialog()
                         viewModel.consumeCannotOpenGifEvent()
+                    }
+
+                    if (uiState.emptyGifsEvent != null) {
+                        displayMessage("No gifs by this request")
+                    }
+
+                    if (uiState.gifsLoadingErrorEvent != null) {
+                        displayMessage("Gifs loading error :( \n Please try later")
                     }
 
                     if (uiState.navigateToGifDetailsEvent != null) {
@@ -94,20 +107,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun showWarningDialog() {
-        AlertDialog.Builder(requireContext())
+        dialog = AlertDialog.Builder(requireContext())
             .setCancelable(true)
             .setTitle("Warning")
             .setMessage("Gif cannot be open. Please check your network connection")
             .setIcon(R.drawable.ic_warning)
             .setPositiveButton("OK", null)
             .create()
-            .show()
+        dialog?.show()
     }
 
-    private fun handleGifsUnavailableText(isVisible: Boolean) {
+    override fun onDetach() {
+        super.onDetach()
+        dialog?.dismiss()
+    }
+
+    private fun displayMessage(message: String) {
         with(binding) {
-            gifsLoadingErrorText.isVisible = isVisible
-            gifsLoadingErrorText.text = "Gifs loading error :( \n Please try later"
+            gifsLoadingErrorText.text = message
         }
     }
 
