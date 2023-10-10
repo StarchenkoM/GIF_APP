@@ -44,9 +44,9 @@ class GifsRepositoryImpl @Inject constructor(
             dbList.map { mapper.mapToUiItem(it) }
         }
 
-    override suspend fun getGifs(query: String): GifsFetchingResponse {
+    override suspend fun getGifs(offset: Int): GifsFetchingResponse {
         Log.i("mytag*", "REPO getGifs: START")
-        gifsNetSource.getGifsFromNet(query).onSuccess { netItems ->
+        gifsNetSource.getGifsFromNet(offset).onSuccess { netItems ->
             return handleSuccessResponse(netItems)
         }
         return LoadingError

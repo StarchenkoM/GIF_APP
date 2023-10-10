@@ -9,8 +9,8 @@ class GetGifsUseCaseImpl @Inject constructor(
     private val gifsRepository: GifsRepository
 ) : GetGifsUseCase {
 
-    override suspend fun getGifs(query: String): GifsFetchingResponse {
-        return gifsRepository.getGifs(query)
+    override suspend fun getGifs(offset: Int): GifsFetchingResponse {
+        return gifsRepository.getGifs(offset)
     }
 
     override suspend fun deleteGifs() {

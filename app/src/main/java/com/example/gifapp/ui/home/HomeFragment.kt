@@ -58,11 +58,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupUiComponents() {
         initAdapter()
-        initSearch()
-
         // TODO: remove
         binding.deleteGifs.setOnClickListener {
             viewModel.deleteAllGifs()
+        }
+        // TODO: remove
+        binding.loadNextGifs.setOnClickListener {
+            viewModel.loadNext()
         }
     }
 
@@ -105,7 +107,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setViewsVisibility(uiState: GifState) {
         with(binding) {
             loaderGroup.isVisible = uiState.isLoading
-            searchHome.isGone = !uiState.isNetworkConnected
             connectionLostWarning.isGone = uiState.isNetworkConnected
             gifsLoadingErrorText.isGone = uiState.isLoadingErrorGone
             recyclerGif.isVisible = uiState.isLoadingErrorGone
@@ -138,40 +139,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.recyclerGif.adapter = adapter
         adapter.onItemClicked = { gifId -> viewModel.openGif(gifId) }
-    }
-
-    //TODO remove?
-    private fun initSearch() {
-        val searchView = binding.searchHome
-        setSearchElementColors(searchView)
-        setOnQueryTextListener(searchView)
-    }
-
-    private fun setSearchElementColors(searchView: SearchView) {
-        val elementsColor = ContextCompat.getColor(requireContext(), R.color.text2)
-
-        val searchIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_button)
-        val closeIcon = searchView.findViewById<ImageView>(androidx.appcompat.R.id.search_close_btn)
-        val searchEditText =
-            searchView.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-
-        searchEditText.setTextColor(elementsColor)
-        searchEditText.setHintTextColor(elementsColor)
-        searchIcon.setColorFilter(elementsColor)
-        closeIcon.setColorFilter(elementsColor)
-    }
-
-    private fun setOnQueryTextListener(searchView: SearchView) {
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { viewModel.loadGifs(it) }
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
     }
 
 }

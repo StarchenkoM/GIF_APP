@@ -29,17 +29,25 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GifState())
     val uiState: StateFlow<GifState> = _uiState.asStateFlow()
 
+    private val offsetFlow = MutableStateFlow(_uiState.value.gifs.size)
+
     private val gifFlow = getGifsUseCase.gifFlow.onEach { gifs ->
-        Log.i("mytag**", "VM: gifFlow gifs.size = ${gifs.size}")
+        offsetFlow.value = gifs.size
+        Log.i(
+            "mytag*****",
+            "VM: gifFlow gifs.size = ${gifs.size} offsetFlow.value = ${offsetFlow.value}"
+        )
+        _uiState.update { it.copy(gifs = gifs) }
         if (gifs.isEmpty()) {
             loadGifs()
         }
-        _uiState.update { it.copy(gifs = gifs) }
     }
+
+
 
     private val connectivityFlow = connectivityObserver.observe()
         .onEach { connectionStatus ->
-            if (isNetworkRestored(connectionStatus)) {
+            if (isNetworkRestored(connectionStatus) && _uiState.value.gifs.isEmpty()) {
                 loadGifs()
             }
             _uiState.update { it.copy(isNetworkConnected = connectionStatus == Status.Available) }
@@ -50,17 +58,21 @@ class HomeViewModel @Inject constructor(
 
 
     init {
+        Log.i("mytag*****", "VM: ================================================")
+        Log.i("mytag*****", "VM: ================================================")
+        Log.i("mytag*****", "VM: ================================================")
         gifFlow.launchIn(viewModelScope)
         connectivityFlow.launchIn(viewModelScope)
+//        offsetFlow.onEach { loadGifs(it) }.launchIn(viewModelScope)
     }
 
-    fun loadGifs(query: String = "") {
+    private fun loadGifs(offset: Int = 0) {
         viewModelScope.launch(Dispatchers.IO) {
             _uiState.update {
                 it.copy(isLoading = true, emptyGifsEvent = null, gifsLoadingErrorEvent = null)
             }
             delay(1500)// TODO: remove
-            when (getGifsUseCase.getGifs(query)) {
+            when (getGifsUseCase.getGifs(offset)) {
                 is EmptyResponseError -> _uiState.update { it.copy(emptyGifsEvent = Unit) }
                 is LoadingError -> _uiState.update { it.copy(gifsLoadingErrorEvent = Unit) }
                 else -> {}
@@ -85,6 +97,19 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
+    fun loadNext() {
+//        offsetFlow.value +=1 // TODO: move to constant
+//        val offset = offsetFlow.value
+//        Log.i("mytag*****", "VM: loadNext offset = $offset")
+        Log.i("mytag*****", "VM: loadNext offset BEFORE INCREMENT = ${offsetFlow.value}")
+        offsetFlow.value += 1 // TODO: move to constant
+        Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
+
+//        loadGifs(offset)
+        loadGifs(offsetFlow.value)
+    }
+
     fun consumeNavigateToGifDetailsEvent() {
         _uiState.update { it.copy(navigateToGifDetailsEvent = null) }
     }
@@ -92,6 +117,7 @@ class HomeViewModel @Inject constructor(
     fun consumeCannotOpenGifEvent() {
         _uiState.update { it.copy(cannotOpenGifEvent = null) }
     }
+
 
     // TODO: add consume fun's
 }

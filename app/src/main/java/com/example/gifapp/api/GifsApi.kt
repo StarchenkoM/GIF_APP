@@ -15,12 +15,11 @@ interface GifsApi {
         @Query("offset") offset: Int = DEFAULT_OFFSET,
         @Query("rating") rating: String = DEFAULT_RATING,
         @Query("lang") language: String = DEFAULT_LANGUAGE,
-//    ): Flow<GifsApiResponse>
     ): Response<GifsApiResponse>
 
     companion object {
         const val DEFAULT_QUERY = "dog"
-        const val DEFAULT_LIMIT = 11
+        const val DEFAULT_LIMIT = 1 // TODO: set bigger number
         const val DEFAULT_OFFSET = 0
         const val DEFAULT_RATING = "g"
         const val DEFAULT_LANGUAGE = "en"

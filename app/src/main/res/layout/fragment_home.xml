@@ -7,25 +7,13 @@
     android:background="#E6E3E3"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_home"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/search_height"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="16dp"
-        android:background="@drawable/search_shape"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/search_hint" />
-
     <TextView
         android:id="@+id/connection_lost_warning"
         android:layout_width="0dp"
         android:layout_height="@dimen/search_height"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="16dp"
-        android:background="#ED3232"
+        android:background="@drawable/warning_shape"
         android:gravity="center_horizontal"
         android:text="Network connection lost"
         android:textSize="22sp"
@@ -33,18 +21,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="@string/search_hint" />
-    <!--    android:background="@drawable/search_shape"-->
-
-    <!--    android:elevation="@dimen/elevation"-->
 
     <Button
         android:id="@+id/delete_gifs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete all gifs"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/load_next_gifs"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_home" />
+        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
+
+    <Button
+        android:id="@+id/load_next_gifs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="load next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/delete_gifs"
+        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -56,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_home" />
+        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/loader_group"
