@@ -12,6 +12,7 @@ import com.example.gifapp.GifsRepository
 import com.example.gifapp.GifsRepositoryImpl
 import com.example.gifapp.api.Constants.BASE_URL
 import com.example.gifapp.api.GifsApi
+import com.example.gifapp.api.RequestInterceptor
 import com.example.gifapp.database.GifDatabase
 import com.example.gifapp.database.GifsDao
 import dagger.Module
@@ -62,6 +63,7 @@ class GifsModule {
     @Provides
     fun provideRetrofit(): Retrofit {
         val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(RequestInterceptor())
         val client = httpClient.build()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)

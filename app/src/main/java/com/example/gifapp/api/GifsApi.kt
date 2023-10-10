@@ -8,7 +8,8 @@ import retrofit2.http.Query
 
 interface GifsApi {
 
-    @GET("gifs/search?api_key=YGHnKKBGSydS6nSt6WAoUcICWwmgCfvL")
+//    @GET("gifs/search?api_key=YGHnKKBGSydS6nSt6WAoUcICWwmgCfvL")
+    @GET("gifs/search?")
     suspend fun getGifs(
         @Query("q") query: String = DEFAULT_QUERY,
         @Query("limit") limit: Int = DEFAULT_LIMIT,
