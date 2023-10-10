@@ -5,11 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -22,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gifapp.GifAdapter
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentHomeBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -79,9 +76,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     adapter.setData(uiState.gifs)
 
                     when {
-                        uiState.isCannotOpenGifEvent -> manageDialogDisplaying()
-                        uiState.isEmptyGifsEvent -> displayMessage("No gifs by this request")
-                        uiState.isGifsLoadingErrorEvent -> displayMessage("Gifs loading error :( \n Please try later")
+                        uiState.isCannotOpenGifEvent -> displayWarningDialog()
+                        uiState.isEmptyGifsEvent -> displaySnackbar("No gifs by this request")
+                        uiState.isGifsLoadingErrorEvent -> displaySnackbar("Gifs loading error :(\nPlease check your network connection")
                         uiState.isNavigateToGifDetailsEvent -> manageNavigationToGifDetails(uiState.selectedGifId)
                     }
                 }.launchIn(this)
@@ -99,7 +96,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         findNavController().navigate(direction)
     }
 
-    private fun manageDialogDisplaying() {
+    private fun displayWarningDialog() {
         showWarningDialog()
         viewModel.consumeCannotOpenGifEvent()
     }
@@ -107,9 +104,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private fun setViewsVisibility(uiState: GifState) {
         with(binding) {
             loaderGroup.isVisible = uiState.isLoading
-            connectionLostWarning.isGone = uiState.isNetworkConnected
-            gifsLoadingErrorText.isGone = uiState.isLoadingErrorGone
-            recyclerGif.isVisible = uiState.isLoadingErrorGone
+            connectionLostWarning.isGone = uiState.isNetworkAvailable
+            gifsLoadingErrorText.isGone = uiState.isEmptyListMessageDisplayed
         }
     }
 
@@ -129,14 +125,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dialog?.dismiss()
     }
 
-    private fun displayMessage(message: String) {
-        with(binding) {
-            gifsLoadingErrorText.text = message
-        }
+    private fun displaySnackbar(message: String) {
+        Snackbar.make(binding.root, message,Snackbar.LENGTH_LONG).show()
+        viewModel.consumeLoadingErrorEvent()
     }
 
     private fun initAdapter() {
-        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), 2)// TODO: move to constant
         binding.recyclerGif.adapter = adapter
         adapter.onItemClicked = { gifId -> viewModel.openGif(gifId) }
     }

@@ -49,6 +49,7 @@ class GifsRepositoryImpl @Inject constructor(
         gifsNetSource.getGifsFromNet(offset).onSuccess { netItems ->
             return handleSuccessResponse(netItems)
         }
+        Log.i("mytag*", "REPO getGifs: END")
         return LoadingError
     }
 

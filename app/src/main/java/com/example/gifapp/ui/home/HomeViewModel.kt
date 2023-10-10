@@ -54,7 +54,8 @@ class HomeViewModel @Inject constructor(
         }
 
     private fun isNetworkRestored(connectionStatus: Status) =
-        connectionStatus == Status.Available && !_uiState.value.isNetworkConnected
+        _uiState.value.isNetworkConnected?.let { connectionStatus == Status.Available && !it }?:false
+
 
 
     init {
@@ -88,7 +89,7 @@ class HomeViewModel @Inject constructor(
 
     fun openGif(gifId: String) {
         viewModelScope.launch {
-            if (_uiState.value.isNetworkConnected) {
+            if (_uiState.value.isNetworkConnected == true) {
                 _uiState.update { it.copy(selectedGifId = gifId, navigateToGifDetailsEvent = Unit) }
             } else {
                 _uiState.update { it.copy(cannotOpenGifEvent = Unit) }
@@ -98,13 +99,9 @@ class HomeViewModel @Inject constructor(
 
 
     fun loadNext() {
-//        offsetFlow.value +=1 // TODO: move to constant
-//        val offset = offsetFlow.value
-//        Log.i("mytag*****", "VM: loadNext offset = $offset")
         Log.i("mytag*****", "VM: loadNext offset BEFORE INCREMENT = ${offsetFlow.value}")
-        offsetFlow.value += 1 // TODO: move to constant
+        offsetFlow.value += 1 // TODO: move to constant Increase value
         Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
-
 //        loadGifs(offset)
         loadGifs(offsetFlow.value)
     }
@@ -115,6 +112,12 @@ class HomeViewModel @Inject constructor(
 
     fun consumeCannotOpenGifEvent() {
         _uiState.update { it.copy(cannotOpenGifEvent = null) }
+    }
+
+    fun consumeLoadingErrorEvent() {
+        _uiState.update {
+            it.copy( emptyGifsEvent = null, gifsLoadingErrorEvent = null)
+        }
     }
 
 
