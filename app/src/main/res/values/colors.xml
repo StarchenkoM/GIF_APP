@@ -10,5 +10,6 @@
     <color name="text2">#898989</color>
 
     <color name="warning_background">#ED3232</color>
+    <color name="launcher_background">#4AF610</color>
 
 </resources>
