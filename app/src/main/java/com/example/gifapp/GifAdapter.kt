@@ -40,10 +40,6 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(gifItem: GifUiItem) {
-            val requestOptions = RequestOptions().apply {
-                transform(CenterCrop(), RoundedCorners(22))
-                placeholder(R.drawable.ic_gif)
-            }
             Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.link}")
             with(binding) {
                 gifTitle.text = gifItem.title
@@ -51,7 +47,8 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //                    .load(gifItem.link) //TODO UNCOMMENT
                     .load(R.drawable.ic_gif)
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
-                    .apply(requestOptions)
+                    .transform(CenterCrop(), RoundedCorners(22))
+                    .placeholder(R.drawable.ic_gif)
                     .into(gifImage)
             }
 

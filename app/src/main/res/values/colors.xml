@@ -9,8 +9,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="text2">#898989</color>
 
-    <color name="warning_background">#ED3232</color>
+    <color name="warning_background">#FFC0CB</color>
+<!--    <color name="warning_background">#F1D61F</color>-->
     <color name="launcher_background">#4AF610</color>
-    <color name="additional_background">#0D424C</color>
+<!--    <color name="additional_background">#0D424C</color>-->
+    <color name="additional_background">#378332</color>
+    <color name="main_background">#80E6E3E3</color>
 
 </resources>
