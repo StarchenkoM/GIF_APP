@@ -1,5 +1,6 @@
 package com.example.gifapp.ui.dashboard
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -67,6 +68,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showGif()
+        shareImageLink()
     }
 
     private fun showGif() {
@@ -76,22 +78,32 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             binding.gifTitle.isVisible = false
         }
 
-
-//        val requestOptions = RequestOptions().apply {
-//            transform(CenterCrop(), RoundedCorners(22))
-//        }
         if (args.link.isNotEmpty()) {
             Glide.with(requireContext())
                 .load(args.link)
                 .listener(imageLoadListener)
                 .transform(CenterCrop(), RoundedCorners(42))
                 .placeholder(R.drawable.ic_gif)
-//                .apply(requestOptions)
                 .into(binding.gifDetailImage)
         } else {
             displayErrorMessage()
         }
 
+    }
+
+    // TODO: Check deprecation
+    private fun shareImageLink() {
+        if (args.link.isNotEmpty()) {
+            binding.shareGif.setOnClickListener {
+                val shareIntent = Intent().apply {
+                    this.action = Intent.ACTION_SEND
+                    this.putExtra(Intent.EXTRA_TEXT, args.link)
+                    this.type = "text/plain"
+                }
+//            binding.root.context.startActivity(Intent.createChooser(shareIntent, requireContext().getString(R.string.share_image_url)))
+                binding.root.context.startActivity(Intent.createChooser(shareIntent, "Share Gif"))
+            }
+        }
     }
 
     private fun displayErrorMessage() {
