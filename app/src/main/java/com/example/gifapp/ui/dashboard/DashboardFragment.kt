@@ -23,6 +23,8 @@ import kotlin.properties.Delegates
 @AndroidEntryPoint
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
+
+    // TODO: add share button
     private var binding by Delegates.notNull<FragmentDashboardBinding>()
     private val viewModel by viewModels<DashboardViewModel>()
     private val args: DashboardFragmentArgs by navArgs()
@@ -34,7 +36,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             target: Target<Drawable>?,
             isFirstResource: Boolean
         ): Boolean {
-            binding.loaderGroup.isGone = true
+            displayErrorMessage()
             return false
         }
 
@@ -66,15 +68,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun showGif() {
         if (args.gifId.isNotEmpty()) {
-            Glide.with(requireContext()).load(args.gifId).listener(imageLoadListener)
+            Glide.with(requireContext())
+                .load(args.gifId)
+                .listener(imageLoadListener)
                 .into(binding.gifDetailImage)
         } else {
-            with(binding) {
-                loaderGroup.isGone = true
-                gifLoadingErrorText.isVisible = true
-                gifLoadingErrorText.text = "Gif loading error :( \n Please try later"
-            }
+            displayErrorMessage()
         }
 
+    }
+
+    private fun displayErrorMessage() {
+        with(binding) {
+            loaderGroup.isGone = true
+            gifLoadingErrorText.isVisible = true
+            gifLoadingErrorText.text = "Gif loading error :( \n Please try later"
+        }
     }
 }

@@ -40,22 +40,44 @@
         app:layout_constraintStart_toEndOf="@+id/delete_gifs"
         app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_gif"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginVertical="48dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
+        android:layout_marginBottom="54dp"
+        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_gif"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="48dp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/load_next_gifs_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="load next_2" />
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/loader_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:elevation="1dp"
         android:visibility="gone"
         app:constraint_referenced_ids="loader_view, loader_background"
         tools:visibility="visible" />
@@ -66,13 +88,15 @@
         android:layout_height="match_parent"
         android:alpha="0.5"
         android:background="#979494"
-        android:clickable="true" />
+        android:clickable="true"
+        android:elevation="1dp" />
 
     <ProgressBar
         android:id="@+id/loader_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:elevation="1dp"
         android:indeterminateTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -85,10 +109,10 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="16dp"
+        android:text="Gifs list is empty"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="Gifs list is empty"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

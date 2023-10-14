@@ -44,7 +44,6 @@ class HomeViewModel @Inject constructor(
     }
 
 
-
     private val connectivityFlow = connectivityObserver.observe()
         .onEach { connectionStatus ->
             if (isNetworkRestored(connectionStatus) && _uiState.value.gifs.isEmpty()) {
@@ -54,8 +53,8 @@ class HomeViewModel @Inject constructor(
         }
 
     private fun isNetworkRestored(connectionStatus: Status) =
-        _uiState.value.isNetworkConnected?.let { connectionStatus == Status.Available && !it }?:false
-
+        _uiState.value.isNetworkConnected?.let { connectionStatus == Status.Available && !it }
+            ?: false
 
 
     init {
@@ -97,13 +96,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
     fun loadNext() {
-        Log.i("mytag*****", "VM: loadNext offset BEFORE INCREMENT = ${offsetFlow.value}")
-        offsetFlow.value += 1 // TODO: move to constant Increase value
-        Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
-//        loadGifs(offset)
-        loadGifs(offsetFlow.value)
+
+        val condition = !_uiState.value.isLoading
+        Log.i("mytag*****", "VM: loadNext CONDITION = $condition")
+        if (condition) {
+            Log.i("mytag*****", "VM: loadNext offset BEFORE INCREMENT = ${offsetFlow.value}")
+            offsetFlow.value += 10 // TODO: move to constant and Increase value should be equal to download list size
+            Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
+            loadGifs(offsetFlow.value)
+        }
     }
 
     fun consumeNavigateToGifDetailsEvent() {
@@ -116,8 +118,13 @@ class HomeViewModel @Inject constructor(
 
     fun consumeLoadingErrorEvent() {
         _uiState.update {
-            it.copy( emptyGifsEvent = null, gifsLoadingErrorEvent = null)
+            it.copy(emptyGifsEvent = null, gifsLoadingErrorEvent = null)
         }
+    }
+
+    fun consumeLoading() {
+        Log.i("mytag*****", "VM: CONSUME_LOADING")
+        _uiState.update { it.copy(isGifLoading = false) }
     }
 
 
