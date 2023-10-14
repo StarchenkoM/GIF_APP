@@ -70,15 +70,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun showGif() {
-        val requestOptions = RequestOptions().apply {
-            transform(CenterCrop(), RoundedCorners(22))
-            placeholder(R.drawable.ic_gif)
+        if (args.title.isNotEmpty()) {
+            binding.gifTitle.text = args.title
+        } else {
+            binding.gifTitle.isVisible = false
         }
-        if (args.gifId.isNotEmpty()) {
+
+
+//        val requestOptions = RequestOptions().apply {
+//            transform(CenterCrop(), RoundedCorners(22))
+//        }
+        if (args.link.isNotEmpty()) {
             Glide.with(requireContext())
-                .load(args.gifId)
+                .load(args.link)
                 .listener(imageLoadListener)
-                .apply(requestOptions)
+                .transform(CenterCrop(), RoundedCorners(42))
+                .placeholder(R.drawable.ic_gif)
+//                .apply(requestOptions)
                 .into(binding.gifDetailImage)
         } else {
             displayErrorMessage()

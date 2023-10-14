@@ -88,11 +88,11 @@
 
     <ProgressBar
         android:id="@+id/loader_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
         android:elevation="1dp"
-        android:indeterminateTint="@color/black"
+        android:indeterminateTint="@color/additional_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -13,7 +13,7 @@ import com.example.gifapp.databinding.ItemGifBinding
 import com.example.gifapp.ui.home.GifUiItem
 
 class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var onItemClicked: ((String) -> Unit)? = null
+    var onItemClicked: ((GifUiItem) -> Unit)? = null
     private var gifs: List<GifUiItem> = mutableListOf()
 
     fun setData(gifs: List<GifUiItem>) {
@@ -56,7 +56,7 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
 
             binding.itemLayout.setOnClickListener {
-                onItemClicked?.invoke(gifItem.link)
+                onItemClicked?.invoke(gifItem)
             }
         }
     }

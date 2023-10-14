@@ -32,9 +32,14 @@
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard">
         <argument
-            android:name="gif_id"
+            android:name="title"
             android:defaultValue=""
             app:argType="string" />
+        <argument
+            android:name="link"
+            android:defaultValue=""
+            app:argType="string" />
+
     </fragment>
 
     <fragment

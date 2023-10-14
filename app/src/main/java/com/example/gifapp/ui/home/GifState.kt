@@ -4,7 +4,7 @@ data class GifState(
     val gifs: List<GifUiItem> = listOf(),
     val isLoading: Boolean = false,
     val isNetworkConnected: Boolean? = null,
-    val selectedGifId: String = "",
+    val selectedGif: GifUiItem = GifUiItem(),
     val cannotOpenGifEvent: Unit? = null,
     val emptyGifsEvent: Unit? = null,
     val gifsLoadingErrorEvent: Unit? = null,

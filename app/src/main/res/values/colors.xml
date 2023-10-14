@@ -11,5 +11,6 @@
 
     <color name="warning_background">#ED3232</color>
     <color name="launcher_background">#4AF610</color>
+    <color name="additional_background">#0D424C</color>
 
 </resources>

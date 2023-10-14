@@ -79,20 +79,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         uiState.isCannotOpenGifEvent -> displayWarningDialog()
                         uiState.isEmptyGifsEvent -> displaySnackbar("No gifs by this request")
                         uiState.isGifsLoadingErrorEvent -> displaySnackbar("Gifs loading error :(\nPlease check your network connection")
-                        uiState.isNavigateToGifDetailsEvent -> manageNavigationToGifDetails(uiState.selectedGifId)
+                        uiState.isNavigateToGifDetailsEvent -> manageNavigationToGifDetails(uiState.selectedGif)
                     }
                 }.launchIn(this)
             }
         }
     }
 
-    private fun manageNavigationToGifDetails(gifId: String) {
-        navigateToGifDetails(gifId)
+    private fun manageNavigationToGifDetails(selectedGif: GifUiItem) {
+        navigateToGifDetails(selectedGif.title, selectedGif.link)
         viewModel.consumeNavigateToGifDetailsEvent()
     }
 
-    private fun navigateToGifDetails(gifId: String) {
-        val direction = HomeFragmentDirections.actionGifsFragmentToGifDetain(gifId)
+    private fun navigateToGifDetails(gifTitle: String, gifLink: String) {
+        val direction = HomeFragmentDirections.actionGifsFragmentToGifDetain(gifTitle, gifLink)
         findNavController().navigate(direction)
     }
 
@@ -136,7 +136,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.recyclerGif.layoutManager =
             GridLayoutManager(requireContext(), 2)// TODO: move to constant
         binding.recyclerGif.adapter = adapter
-        adapter.onItemClicked = { gifId -> viewModel.openGif(gifId) }
+        adapter.onItemClicked = { gifItem -> viewModel.openGif(gifItem) }
 
     }
 

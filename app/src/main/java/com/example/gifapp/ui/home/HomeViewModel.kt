@@ -86,10 +86,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun openGif(gifId: String) {
+    fun openGif(gifItem: GifUiItem) {
         viewModelScope.launch {
             if (_uiState.value.isNetworkConnected == true) {
-                _uiState.update { it.copy(selectedGifId = gifId, navigateToGifDetailsEvent = Unit) }
+                _uiState.update { it.copy(selectedGif = gifItem, navigateToGifDetailsEvent = Unit) }
             } else {
                 _uiState.update { it.copy(cannotOpenGifEvent = Unit) }
             }
