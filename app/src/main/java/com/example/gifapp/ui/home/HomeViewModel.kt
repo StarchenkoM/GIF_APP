@@ -97,15 +97,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadNext() {
-
-        val condition = !_uiState.value.isLoading
-        Log.i("mytag*****", "VM: loadNext CONDITION = $condition")
-        if (condition) {
-            Log.i("mytag*****", "VM: loadNext offset BEFORE INCREMENT = ${offsetFlow.value}")
-            offsetFlow.value += 10 // TODO: move to constant and Increase value should be equal to download list size
-            Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
-            loadGifs(offsetFlow.value)
-        }
+        offsetFlow.value += 1 // TODO: move to constant and Increase value should be equal to download list size
+        Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
+        loadGifs(offsetFlow.value)
     }
 
     fun consumeNavigateToGifDetailsEvent() {
@@ -120,11 +114,6 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(emptyGifsEvent = null, gifsLoadingErrorEvent = null)
         }
-    }
-
-    fun consumeLoading() {
-        Log.i("mytag*****", "VM: CONSUME_LOADING")
-        _uiState.update { it.copy(isGifLoading = false) }
     }
 
 

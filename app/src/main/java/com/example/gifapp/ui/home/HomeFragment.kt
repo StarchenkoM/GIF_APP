@@ -15,9 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.example.gifapp.GifAdapter
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentHomeBinding
@@ -67,48 +64,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.loadNextGifs.setOnClickListener {
             viewModel.loadNext()
         }
-        initScrollListener()
+
+        binding.loadNextGifs2.setOnClickListener {
+            viewModel.loadNext()
+        }
     }
-
-
-        private fun initScrollListener() {
-        binding.recyclerGif.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-            }
-
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-                val position = linearLayoutManager.findLastCompletelyVisibleItemPosition()
-                val condition = position == (adapter.itemCount - 1)
-//                Log.i("mytag*****", "FRAGMENT onScrolled: position = $position / ${adapter.itemCount-1} CONDITION = $condition")
-
-                if (condition) {
-                    viewModel.loadNext()
-                }
-            }
-        })
-    }
-//    private fun initScrollListener() {
-//        binding.recyclerGif.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
-//                val visibleItemCount: Int = linearLayoutManager.childCount
-//                val totalItemCount: Int = linearLayoutManager.itemCount
-//                val firstVisibleItemPosition: Int =
-//                    linearLayoutManager.findFirstVisibleItemPosition()
-//                val condition = visibleItemCount + firstVisibleItemPosition >= totalItemCount && firstVisibleItemPosition >= 0
-//                if (condition) {
-//                    // The RecyclerView has been scrolled to the bottom, load more data here
-//                    // Call your data loading method here
-//                    // Example: fetchData();
-//                    viewModel.loadNext()
-//                }
-//            }
-//        })
-//    }
 
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -119,10 +79,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                     setViewsVisibility(uiState)
                     adapter.setData(uiState.gifs)
-                    if (!binding.recyclerGif.isComputingLayout && binding.recyclerGif.scrollState == SCROLL_STATE_IDLE) {
-                        binding.recyclerGif.adapter?.notifyDataSetChanged()
-                    }
-
                     when {
                         uiState.isCannotOpenGifEvent -> displayWarningDialog()
                         uiState.isEmptyGifsEvent -> displaySnackbar("No gifs by this request")
@@ -154,6 +110,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             loaderGroup.isVisible = uiState.isLoading
             connectionLostWarning.isGone = uiState.isNetworkAvailable
             gifsLoadingErrorText.isGone = uiState.isEmptyListMessageDisplayed
+            loadNextGifs2.isVisible = uiState.gifs.isNotEmpty()
+            loadNextGifs2.isEnabled = !uiState.isLoading
         }
     }
 
@@ -183,8 +141,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             GridLayoutManager(requireContext(), 2)// TODO: move to constant
         binding.recyclerGif.adapter = adapter
         adapter.onItemClicked = { gifId -> viewModel.openGif(gifId) }
-        adapter.onLoadNext = { viewModel.loadNext() }
-        adapter.onLoadingResult = { viewModel.consumeLoading() }
 
     }
 
