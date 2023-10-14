@@ -27,17 +27,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="delete all gifs"
-        app:layout_constraintEnd_toStartOf="@+id/load_next_gifs"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
-
-    <Button
-        android:id="@+id/load_next_gifs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="load next"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/delete_gifs"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
 
     <androidx.core.widget.NestedScrollView
@@ -59,11 +50,12 @@
                 android:id="@+id/recycler_gif"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginHorizontal="8dp"
                 android:layout_marginVertical="48dp"
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/load_next_gifs_2"
+                android:id="@+id/load_next_gifs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -83,6 +75,7 @@
         android:visibility="gone"
         app:constraint_referenced_ids="loader_view, loader_background"
         tools:visibility="visible" />
+    <!--    android:elevation="1dp"-->
 
     <View
         android:id="@+id/loader_background"

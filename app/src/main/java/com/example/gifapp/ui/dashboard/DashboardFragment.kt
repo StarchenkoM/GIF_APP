@@ -13,7 +13,10 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentDashboardBinding
@@ -67,10 +70,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun showGif() {
+        val requestOptions = RequestOptions().apply {
+            transform(CenterCrop(), RoundedCorners(22))
+            placeholder(R.drawable.ic_gif)
+        }
         if (args.gifId.isNotEmpty()) {
             Glide.with(requireContext())
                 .load(args.gifId)
                 .listener(imageLoadListener)
+                .apply(requestOptions)
                 .into(binding.gifDetailImage)
         } else {
             displayErrorMessage()

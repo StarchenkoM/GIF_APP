@@ -64,10 +64,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.loadNextGifs.setOnClickListener {
             viewModel.loadNext()
         }
-
-        binding.loadNextGifs2.setOnClickListener {
-            viewModel.loadNext()
-        }
     }
 
     private fun setupObservers() {
@@ -110,8 +106,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             loaderGroup.isVisible = uiState.isLoading
             connectionLostWarning.isGone = uiState.isNetworkAvailable
             gifsLoadingErrorText.isGone = uiState.isEmptyListMessageDisplayed
-            loadNextGifs2.isVisible = uiState.gifs.isNotEmpty()
-            loadNextGifs2.isEnabled = !uiState.isLoading
+            loadNextGifs.isVisible = uiState.gifs.isNotEmpty()
+            loadNextGifs.isEnabled = !uiState.isLoading
         }
     }
 
