@@ -15,10 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.gifapp.GifAdapter
+import com.example.gifapp.GifUiItem
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentGifsBinding
-import com.example.gifapp.GifUiItem
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
