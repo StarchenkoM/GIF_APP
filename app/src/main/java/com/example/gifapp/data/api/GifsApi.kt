@@ -1,7 +1,7 @@
-package com.example.gifapp.api
+package com.example.gifapp.data.api
 
 
-import com.example.gifapp.GifsApiResponse
+import com.example.gifapp.domain.entities.GifsApiResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

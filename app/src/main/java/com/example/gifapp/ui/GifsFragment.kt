@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.gifapp.GifUiItem
+import com.example.gifapp.domain.entities.GifUiItem
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentGifsBinding
 import com.google.android.material.snackbar.Snackbar

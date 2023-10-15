@@ -2,8 +2,8 @@ package com.example.gifapp.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.gifapp.database.GifDatabase
-import com.example.gifapp.database.GifsDao
+import com.example.gifapp.data.database.GifDatabase
+import com.example.gifapp.data.database.GifsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

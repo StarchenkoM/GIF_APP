@@ -1,7 +1,9 @@
-package com.example.gifapp
+package com.example.gifapp.data.datasource
 
 import android.util.Log
-import com.example.gifapp.api.GifsApi
+import com.example.gifapp.data.api.GifsApi
+import com.example.gifapp.data.repository.GifsNetSource
+import com.example.gifapp.domain.entities.GifNetItem
 import javax.inject.Inject
 
 class GifsNetSourceImpl @Inject constructor(

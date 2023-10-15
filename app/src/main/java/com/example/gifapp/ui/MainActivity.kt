@@ -1,4 +1,4 @@
-package com.example.gifapp
+package com.example.gifapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

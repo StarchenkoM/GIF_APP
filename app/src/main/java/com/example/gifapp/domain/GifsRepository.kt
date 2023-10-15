@@ -1,5 +1,7 @@
-package com.example.gifapp
+package com.example.gifapp.domain
 
+import com.example.gifapp.data.repository.GifsFetchingResponse
+import com.example.gifapp.domain.entities.GifUiItem
 import kotlinx.coroutines.flow.Flow
 
 interface GifsRepository {

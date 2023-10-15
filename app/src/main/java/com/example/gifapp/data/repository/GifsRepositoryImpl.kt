@@ -1,10 +1,14 @@
-package com.example.gifapp
+package com.example.gifapp.data.repository
 
 import android.util.Log
-import com.example.gifapp.GifsFetchingResponse.EmptyResponseError
-import com.example.gifapp.GifsFetchingResponse.GifsFetchingSuccess
-import com.example.gifapp.GifsFetchingResponse.LoadingError
-import com.example.gifapp.database.GifsDao
+import com.example.gifapp.domain.entities.GifUiItem
+import com.example.gifapp.data.repository.GifsFetchingResponse.EmptyResponseError
+import com.example.gifapp.data.repository.GifsFetchingResponse.GifsFetchingSuccess
+import com.example.gifapp.data.repository.GifsFetchingResponse.LoadingError
+import com.example.gifapp.data.database.GifsDao
+import com.example.gifapp.domain.entities.GifDBEntity
+import com.example.gifapp.domain.entities.GifNetItem
+import com.example.gifapp.domain.GifsRepository
 import com.example.gifapp.util.mapToDataBaseEntities
 import com.example.gifapp.util.mapToUiItem
 import kotlinx.coroutines.flow.Flow

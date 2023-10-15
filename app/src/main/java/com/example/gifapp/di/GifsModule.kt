@@ -1,13 +1,13 @@
 package com.example.gifapp.di
 
-import com.example.gifapp.GetGifsUseCase
-import com.example.gifapp.GetGifsUseCaseImpl
-import com.example.gifapp.GifsNetSource
-import com.example.gifapp.GifsNetSourceImpl
-import com.example.gifapp.GifsRepository
-import com.example.gifapp.GifsRepositoryImpl
-import com.example.gifapp.api.GifsApi
-import com.example.gifapp.database.GifsDao
+import com.example.gifapp.domain.usecases.GetGifsUseCase
+import com.example.gifapp.domain.usecases.GetGifsUseCaseImpl
+import com.example.gifapp.data.repository.GifsNetSource
+import com.example.gifapp.data.datasource.GifsNetSourceImpl
+import com.example.gifapp.domain.GifsRepository
+import com.example.gifapp.data.repository.GifsRepositoryImpl
+import com.example.gifapp.data.api.GifsApi
+import com.example.gifapp.data.database.GifsDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

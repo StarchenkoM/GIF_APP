@@ -1,4 +1,4 @@
-package com.example.gifapp
+package com.example.gifapp.domain.entities
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,8 +1,8 @@
 package com.example.gifapp.di
 
-import com.example.gifapp.api.Constants.BASE_URL
-import com.example.gifapp.api.GifsApi
-import com.example.gifapp.api.RequestInterceptor
+import com.example.gifapp.data.api.Constants.BASE_URL
+import com.example.gifapp.data.api.GifsApi
+import com.example.gifapp.data.api.RequestInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

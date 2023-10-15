@@ -1,8 +1,8 @@
-package com.example.gifapp.database
+package com.example.gifapp.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.gifapp.GifDBEntity
+import com.example.gifapp.domain.entities.GifDBEntity
 
 //@TypeConverters(TypeConverter::class)
 @Database(

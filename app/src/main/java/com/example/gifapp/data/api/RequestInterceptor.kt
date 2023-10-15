@@ -1,6 +1,6 @@
-package com.example.gifapp.api
+package com.example.gifapp.data.api
 
-import com.example.gifapp.api.Constants.API_KEY
+import com.example.gifapp.data.api.Constants.API_KEY
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
 import okhttp3.Response

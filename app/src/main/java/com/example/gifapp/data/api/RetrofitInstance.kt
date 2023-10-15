@@ -1,6 +1,6 @@
-package com.example.gifapp.api
+package com.example.gifapp.data.api
 
-import com.example.gifapp.api.Constants.BASE_URL
+import com.example.gifapp.data.api.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

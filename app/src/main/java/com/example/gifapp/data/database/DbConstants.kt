@@ -1,4 +1,4 @@
-package com.example.gifapp.database
+package com.example.gifapp.data.database
 
 object DbConstants {
     const val ROOM_DATABASE_VERSION = 1

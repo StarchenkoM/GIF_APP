@@ -1,8 +1,8 @@
 package com.example.gifapp.util
 
-import com.example.gifapp.GifDBEntity
-import com.example.gifapp.GifNetItem
-import com.example.gifapp.GifUiItem
+import com.example.gifapp.domain.entities.GifDBEntity
+import com.example.gifapp.domain.entities.GifNetItem
+import com.example.gifapp.domain.entities.GifUiItem
 
 fun List<GifNetItem>.mapToDataBaseEntities() = this.map { item ->
     GifDBEntity(
