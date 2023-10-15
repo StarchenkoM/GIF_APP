@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -29,7 +30,6 @@ import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
-
 
     private var binding by Delegates.notNull<FragmentGifDetailsBinding>()
     private val args: GifDetailsFragmentArgs by navArgs()
@@ -105,7 +105,7 @@ class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
     private fun shareGifLink() {
         binding.shareGif.setOnClickListener {
             args.link.ifEmpty {
-                showSnackbar("Gif could not be shared")
+                showSnackbar(R.string.gif_could_not_be_shared)
                 return@setOnClickListener
             }
             openChooser()
@@ -116,12 +116,12 @@ class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
         val chooserIntent = Intent(ACTION_SEND).apply {
             putExtra(EXTRA_TEXT, args.link)
             type = "text/plain"
-            createChooser(this, "Share Gif")
+            createChooser(this, getString(R.string.share_gif))
         }
         shareGifChooser.launch(chooserIntent)
     }
 
-    private fun showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
+    private fun showSnackbar(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
         Snackbar.make(binding.root, message, duration).show()
     }
 
@@ -129,7 +129,7 @@ class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
         with(binding) {
             loaderGroup.isGone = true
             gifLoadingErrorText.isVisible = true
-            gifLoadingErrorText.text = "Gif loading error :( \n Please try later"
+            gifLoadingErrorText.text = getString(R.string.gif_loading_error_message)
         }
     }
 }

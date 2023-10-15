@@ -3,5 +3,13 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="search_hint">Text your request here</string>
+    <string name="gif_could_not_be_shared">Gif could not be shared</string>
+    <string name="share_gif">Share Gif</string>
+    <string name="gif_loading_error_message">Gif loading error :( \nPlease check your network connection</string>
+    <string name="share_btn">Share</string>
+    <string name="no_gifs_message">No gifs by this request</string>
+    <string name="warning_dialog_message">Gif cannot be open. Please check your network connection</string>
+    <string name="warning_dialog_title">Warning</string>
+    <string name="positive_btn_text">OK</string>
+    <string name="gif_image_content_description">gif image</string>
 </resources>

@@ -14,6 +14,7 @@
     <color name="warning_background">#F1D61F</color>
     <color name="launcher_background">#4AF610</color>
     <color name="additional_background">#378332</color>
+    <color name="loading_background">#979494</color>
     <color name="main_background">#80E6E3E3</color>
     <color name="accent">#009688</color>
 

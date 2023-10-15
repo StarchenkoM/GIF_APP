@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -77,8 +78,8 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
                     adapter.setData(uiState.gifs)
                     when {
                         uiState.isCannotOpenGifEvent -> displayWarningDialog()
-                        uiState.isEmptyGifsEvent -> showSnackbar("No gifs by this request")
-                        uiState.isGifsLoadingErrorEvent -> showSnackbar("Gifs loading error :(\nPlease check your network connection")
+                        uiState.isEmptyGifsEvent -> showSnackbar(R.string.no_gifs_message)
+                        uiState.isGifsLoadingErrorEvent -> showSnackbar(R.string.gif_loading_error_message)
                         uiState.isNavigateToGifDetailsEvent -> openGifDetails(uiState.selectedGif)
                     }
                 }.launchIn(this)
@@ -114,10 +115,10 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
     private fun showWarningDialog() {
         dialog = AlertDialog.Builder(requireContext())
             .setCancelable(true)
-            .setTitle("Warning")
-            .setMessage("Gif cannot be open. Please check your network connection")
+            .setTitle(R.string.warning_dialog_title)
+            .setMessage(R.string.warning_dialog_message)
             .setIcon(R.drawable.ic_warning)
-            .setPositiveButton("OK", null)
+            .setPositiveButton(R.string.positive_btn_text, null)
             .create()
         dialog?.show()
     }
@@ -127,7 +128,7 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
         dialog?.dismiss()
     }
 
-    private fun showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
+    private fun showSnackbar(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
         Snackbar.make(binding.root, message, duration).show()
         viewModel.consumeLoadingErrorEvent()
     }

@@ -5,4 +5,5 @@
     <dimen name="homescreen_action_bar_height">58dp</dimen>
     <dimen name="elevation">2dp</dimen>
     <dimen name="warning_height">42dp</dimen>
+    <dimen name="progress_bar_size">100dp</dimen>
 </resources>
