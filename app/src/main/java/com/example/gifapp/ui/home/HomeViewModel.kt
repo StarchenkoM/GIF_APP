@@ -99,7 +99,7 @@ class HomeViewModel @Inject constructor(
 
     fun loadNext() {
         Log.i("mytag*****", "VM: loadNext offset BEFORE_INCREMENT = ${offsetFlow.value}")
-        offsetFlow.value += OFFSET_INCREMENT // TODO: move to constant and Increase value should be equal to download list size
+        offsetFlow.value += OFFSET_INCREMENT
         Log.i("mytag*****", "VM: loadNext offset AFTER_INCREMENT = ${offsetFlow.value}")
         loadGifs(offsetFlow.value)
     }
