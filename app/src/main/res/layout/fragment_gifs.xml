@@ -11,17 +11,16 @@
         android:id="@+id/connection_lost_warning"
         android:layout_width="0dp"
         android:layout_height="@dimen/warning_height"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginVertical="@dimen/margin_medium"
         android:background="@drawable/warning_shape"
         android:gravity="center_horizontal|center_vertical"
-        android:text="Network connection lost"
+        android:text="@string/network_connection_lost"
         android:textColor="@color/text3"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:queryHint="@string/search_hint" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/delete_gifs"
@@ -36,7 +35,7 @@
         android:id="@+id/scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="@dimen/margin_medium"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,8 +51,8 @@
                 android:id="@+id/recycler_gif"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="@dimen/margin_normal"
+                android:layout_marginVertical="@dimen/margin_medium"
                 android:visibility="visible" />
 
             <Button
@@ -62,7 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="@dimen/margin_medium"
                 android:text="load next" />
         </LinearLayout>
 
@@ -103,8 +102,8 @@
         android:id="@+id/gifs_loading_error_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="@dimen/margin_medium"
+        android:layout_marginVertical="@dimen/margin_medium"
         android:text="Gifs list is empty"
         android:textAlignment="center"
         android:textSize="20sp"

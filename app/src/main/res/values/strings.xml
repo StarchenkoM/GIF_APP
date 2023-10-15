@@ -12,4 +12,5 @@
     <string name="warning_dialog_title">Warning</string>
     <string name="positive_btn_text">OK</string>
     <string name="gif_image_content_description">gif image</string>
+    <string name="network_connection_lost">Network connection lost</string>
 </resources>
