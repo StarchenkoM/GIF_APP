@@ -12,7 +12,6 @@ class GifsNetSourceImpl @Inject constructor(
 
         return kotlin.runCatching {
             gifsApi.getGifs(offset = offset).body()?.gifs ?: emptyList()
-//            emptyList()
         }
     }
 

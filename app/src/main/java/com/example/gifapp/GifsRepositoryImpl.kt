@@ -6,6 +6,8 @@ import com.example.gifapp.GifsFetchingResponse.GifsFetchingSuccess
 import com.example.gifapp.GifsFetchingResponse.LoadingError
 import com.example.gifapp.database.GifsDao
 import com.example.gifapp.ui.home.GifUiItem
+import com.example.gifapp.util.mapToDataBaseEntities
+import com.example.gifapp.util.mapToUiItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -13,25 +15,7 @@ import javax.inject.Inject
 class GifsRepositoryImpl @Inject constructor(
     private val gifsNetSource: GifsNetSource,
     private val gifsDao: GifsDao,
-    private val mapper: GifsMapper,
 ) : GifsRepository {
-
-    override suspend fun deleteSomeGifs() {
-        Log.i("mytag*", "REPO deleteSomeGifs: START")
-        val deletionList = listOf(
-            "3o7527pa7qs9kCG78A",
-            "4Zo41lhzKt6iZ8xff9",
-            "ЄgFW9rRpOkMRBY2KF6s",
-            "kiBcwEXegBTACmVOnE",
-            "QvBoMEcQ7DQXK",
-            "xUA7aQaXbhnkX4znm8",
-        )
-        deletionList.forEach {
-            gifsDao.deleteGif(it)
-        }
-        Log.i("mytag*", "REPO deleteSomeGifs: END")
-
-    }
 
     override suspend fun deleteAllGifs() {
         Log.i("mytag*", "REPO deleteAllGifs: START")
@@ -41,7 +25,7 @@ class GifsRepositoryImpl @Inject constructor(
 
     override val gifFlow: Flow<List<GifUiItem>>
         get() = gifsDao.getDBGifs().map { dbList ->
-            dbList.map { mapper.mapToUiItem(it) }
+            dbList.mapToUiItem()
         }
 
     override suspend fun getGifs(offset: Int): GifsFetchingResponse {

@@ -1,8 +1,6 @@
 package com.example.gifapp.database
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Upsert
 import com.example.gifapp.GifDBEntity
@@ -24,6 +22,4 @@ interface GifsDao {
     @Query("DELETE FROM $GIFS_TABLE_NAME")
     fun deleteAllGifs(): Int
 
-    @Query("DELETE FROM $GIFS_TABLE_NAME WHERE id =:id")
-    fun deleteGif(id: String): Int
 }
