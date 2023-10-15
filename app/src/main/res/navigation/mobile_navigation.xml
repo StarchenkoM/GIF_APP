@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.gifapp.ui.home.HomeFragment"
+        android:name="com.example.gifapp.ui.home.GifsFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_gifs">
 
 
         <action
@@ -28,9 +28,9 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.gifapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.gifapp.ui.dashboard.GifDetailsFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard">
+        tools:layout="@layout/fragment_gif_details">
         <argument
             android:name="title"
             android:defaultValue=""
@@ -42,9 +42,4 @@
 
     </fragment>
 
-    <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.example.gifapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
 </navigation>

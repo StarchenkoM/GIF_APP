@@ -13,29 +13,26 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.gifapp.R
-import com.example.gifapp.databinding.FragmentDashboardBinding
+import com.example.gifapp.databinding.FragmentGifDetailsBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
 
 
-    private var binding by Delegates.notNull<FragmentDashboardBinding>()
-    private val viewModel by viewModels<DashboardViewModel>()
-    private val args: DashboardFragmentArgs by navArgs()
+    private var binding by Delegates.notNull<FragmentGifDetailsBinding>()
+    private val args: GifDetailsFragmentArgs by navArgs()
 
     private val imageLoadListener = object : RequestListener<Drawable> {
         override fun onLoadFailed(
@@ -68,7 +65,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDashboardBinding.inflate(inflater, container, false)
+        binding = FragmentGifDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -10,7 +10,6 @@ import com.example.gifapp.NetworkConnectivityObserver
 import com.example.gifapp.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +22,7 @@ import javax.inject.Inject
 private const val OFFSET_INCREMENT = 25
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class GifsViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase,
     private val connectivityObserver: NetworkConnectivityObserver,
 ) : ViewModel() {

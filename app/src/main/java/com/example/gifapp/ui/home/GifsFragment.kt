@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gifapp.GifAdapter
 import com.example.gifapp.R
-import com.example.gifapp.databinding.FragmentHomeBinding
+import com.example.gifapp.databinding.FragmentGifsBinding
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -29,10 +29,10 @@ import kotlin.properties.Delegates
 private const val GRID_SPAN_COUNT = 2
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class GifsFragment : Fragment(R.layout.fragment_gifs) {
 
-    private var binding by Delegates.notNull<FragmentHomeBinding>()
-    private val viewModel by viewModels<HomeViewModel>()
+    private var binding by Delegates.notNull<FragmentGifsBinding>()
+    private val viewModel by viewModels<GifsViewModel>()
     private val adapter = GifAdapter()
     private var dialog: AlertDialog? = null
 
@@ -41,7 +41,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentGifsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -93,7 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun navigateToGifDetails(gifTitle: String, gifLink: String) {
-        val direction = HomeFragmentDirections.actionGifsFragmentToGifDetain(gifTitle, gifLink)
+        val direction = GifsFragmentDirections.actionGifsFragmentToGifDetain(gifTitle, gifLink)
         findNavController().navigate(direction)
     }
 

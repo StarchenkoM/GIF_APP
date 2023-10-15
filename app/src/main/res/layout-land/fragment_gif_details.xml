@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_background"
-    tools:context=".ui.dashboard.DashboardFragment">
+    tools:context=".ui.dashboard.GifDetailsFragment">
 
     <TextView
         android:id="@+id/gif_title"
@@ -14,12 +14,14 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:ellipsize="end"
+        android:maxLines="5"
+        android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toEndOf="@+id/gif_detail_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="File name loooooooooooooooooooooooooooooooooooooooooooooooooooooooong" />
 
@@ -29,22 +31,23 @@
         android:layout_height="0dp"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/share_gif"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gif_title"
+        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/gif_title" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_gif" />
 
     <Button
         android:id="@+id/share_gif"
         style="@style/GifButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
         android:text="Share"
-        android:layout_marginBottom="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/gif_title"
+        app:layout_constraintStart_toStartOf="@+id/gif_title" />
 
     <TextView
         android:id="@+id/gif_loading_error_text"
