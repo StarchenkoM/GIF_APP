@@ -26,6 +26,8 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 
+private const val GRID_SPAN_COUNT = 2
+
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -60,7 +62,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         binding.deleteGifs.setOnClickListener {
             viewModel.deleteAllGifs()
         }
-        // TODO: remove
         binding.loadNextGifs.setOnClickListener {
             viewModel.loadNext()
         }
@@ -133,11 +134,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun initAdapter() {
-        binding.recyclerGif.layoutManager =
-            GridLayoutManager(requireContext(), 2)// TODO: move to constant
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
         binding.recyclerGif.adapter = adapter
         adapter.onItemClicked = { gifItem -> viewModel.openGif(gifItem) }
-
     }
 
 }

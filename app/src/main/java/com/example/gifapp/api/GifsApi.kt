@@ -19,7 +19,7 @@ interface GifsApi {
 
     companion object {
         const val DEFAULT_QUERY = "dog"
-        const val DEFAULT_LIMIT = 1 // TODO: set bigger number
+        const val DEFAULT_LIMIT = 25
         const val DEFAULT_OFFSET = 0
         const val DEFAULT_RATING = "g"
         const val DEFAULT_LANGUAGE = "en"

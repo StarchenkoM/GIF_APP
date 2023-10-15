@@ -20,6 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val OFFSET_INCREMENT = 25
+
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase,
@@ -29,7 +31,7 @@ class HomeViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GifState())
     val uiState: StateFlow<GifState> = _uiState.asStateFlow()
 
-    private val offsetFlow = MutableStateFlow(_uiState.value.gifs.size)
+    private val offsetFlow = MutableStateFlow(0)
 
     private val gifFlow = getGifsUseCase.gifFlow.onEach { gifs ->
         offsetFlow.value = gifs.size
@@ -70,7 +72,6 @@ class HomeViewModel @Inject constructor(
             _uiState.update {
                 it.copy(isLoading = true, emptyGifsEvent = null, gifsLoadingErrorEvent = null)
             }
-            delay(1500)// TODO: remove
             when (getGifsUseCase.getGifs(offset)) {
                 is EmptyResponseError -> _uiState.update { it.copy(emptyGifsEvent = Unit) }
                 is LoadingError -> _uiState.update { it.copy(gifsLoadingErrorEvent = Unit) }
@@ -97,8 +98,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadNext() {
-        offsetFlow.value += 1 // TODO: move to constant and Increase value should be equal to download list size
-        Log.i("mytag*****", "VM: loadNext offset AFTER INCREMENT = ${offsetFlow.value}")
+        Log.i("mytag*****", "VM: loadNext offset BEFORE_INCREMENT = ${offsetFlow.value}")
+        offsetFlow.value += OFFSET_INCREMENT // TODO: move to constant and Increase value should be equal to download list size
+        Log.i("mytag*****", "VM: loadNext offset AFTER_INCREMENT = ${offsetFlow.value}")
         loadGifs(offsetFlow.value)
     }
 
@@ -116,6 +118,4 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
-    // TODO: add consume fun's
 }
