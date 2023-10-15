@@ -55,14 +55,28 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
         binding.recyclerGif.adapter = null
     }
 
+    override fun onDetach() {
+        super.onDetach()
+        dialog?.dismiss()
+    }
+
     private fun setupUiComponents() {
         initAdapter()
-        // TODO: remove
-        binding.deleteGifs.setOnClickListener {
-            viewModel.deleteAllGifs()
+        initListeners()
+    }
+
+    private fun initAdapter() {
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+        binding.recyclerGif.adapter = adapter
+        adapter.onItemClicked = { gifItem -> viewModel.openGif(gifItem) }
+    }
+
+    private fun initListeners() {
+        binding.manageGifsBtn.setOnClickListener {
+            viewModel.handleButtonClick()
         }
-        binding.loadNextGifs.setOnClickListener {
-            viewModel.loadNext()
+        binding.optionsSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
+            viewModel.updateDeleteOptionPosition(isChecked)
         }
     }
 
@@ -72,6 +86,7 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
                 viewModel.uiState.onEach { uiState ->
                     setViewsVisibility(uiState)
                     adapter.setData(uiState.gifs)
+                    setButtonText(uiState.isDeleteOptionEnabled)
                     when {
                         uiState.isCannotOpenGifEvent -> displayWarningDialog()
                         uiState.isEmptyGifsEvent -> showSnackbar(R.string.no_gifs_message)
@@ -83,29 +98,29 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
         }
     }
 
-    private fun openGifDetails(selectedGif: GifUiItem) {
-        navigateToGifDetails(selectedGif.title, selectedGif.link)
-        viewModel.consumeNavigateToGifDetailsEvent()
-    }
-
-    private fun navigateToGifDetails(gifTitle: String, gifLink: String) {
-        val direction = GifsFragmentDirections.actionGifsFragmentToGifDetain(gifTitle, gifLink)
-        findNavController().navigate(direction)
-    }
-
-    private fun displayWarningDialog() {
-        showWarningDialog()
-        viewModel.consumeCannotOpenGifEvent()
-    }
-
     private fun setViewsVisibility(uiState: GifState) {
         with(binding) {
             loaderGroup.isVisible = uiState.isLoading
             connectionLostWarning.isGone = uiState.isNetworkAvailable
             gifsLoadingErrorText.isGone = uiState.isEmptyListMessageDisplayed
-            loadNextGifs.isVisible = uiState.gifs.isNotEmpty()
-            loadNextGifs.isEnabled = !uiState.isLoading
+            manageGifsBtn.isVisible = uiState.gifs.isNotEmpty()
+            manageGifsBtn.isEnabled = !uiState.isLoading
+            optionsSwitch.isVisible = uiState.gifs.isNotEmpty()
         }
+    }
+
+    private fun setButtonText(isDeleteOptionEnabled: Boolean) {
+        val buttonText = if (isDeleteOptionEnabled) {
+            R.string.options_switch_text_delete
+        } else {
+            R.string.load_next_btn_text
+        }
+        binding.manageGifsBtn.setText(buttonText)
+    }
+
+    private fun displayWarningDialog() {
+        showWarningDialog()
+        viewModel.consumeCannotOpenGifEvent()
     }
 
     private fun showWarningDialog() {
@@ -119,20 +134,19 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
         dialog?.show()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        dialog?.dismiss()
-    }
-
     private fun showSnackbar(@StringRes message: Int, duration: Int = Snackbar.LENGTH_LONG) {
         Snackbar.make(binding.root, message, duration).show()
         viewModel.consumeLoadingErrorEvent()
     }
 
-    private fun initAdapter() {
-        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
-        binding.recyclerGif.adapter = adapter
-        adapter.onItemClicked = { gifItem -> viewModel.openGif(gifItem) }
+    private fun openGifDetails(selectedGif: GifUiItem) {
+        navigateToGifDetails(selectedGif.title, selectedGif.link)
+        viewModel.consumeNavigateToGifDetailsEvent()
+    }
+
+    private fun navigateToGifDetails(gifTitle: String, gifLink: String) {
+        val direction = GifsFragmentDirections.actionGifsFragmentToGifDetain(gifTitle, gifLink)
+        findNavController().navigate(direction)
     }
 
 }

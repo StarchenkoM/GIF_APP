@@ -22,15 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/delete_gifs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="delete all gifs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/connection_lost_warning" />
-
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scroll"
         android:layout_width="0dp"
@@ -56,17 +47,30 @@
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/load_next_gifs"
+                android:id="@+id/manage_gifs_btn"
                 style="@style/GifButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:text="@string/load_next_btn_text" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/options_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="@dimen/margin_medium"
+                android:text="@string/options_switch_text_delete"
+                android:textSize="@dimen/text_button" />
+            <!--todo check color-->
+<!--            app:thumbTint="@color/gif_button_background"-->
+<!--            app:trackTint="@color/gif_button_background"-->
+
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
-
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/loader_group"
@@ -116,6 +120,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Gif loading error"
         tools:visibility="visible" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

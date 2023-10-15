@@ -5,6 +5,7 @@ import com.example.gifapp.domain.entities.GifUiItem
 data class GifState(
     val gifs: List<GifUiItem> = listOf(),
     val isLoading: Boolean = false,
+    val isDeleteOptionEnabled: Boolean = false,
     val isNetworkConnected: Boolean? = null,
     val selectedGif: GifUiItem = GifUiItem(),
     val cannotOpenGifEvent: Unit? = null,

@@ -53,6 +53,28 @@ class GifsViewModel @Inject constructor(
         connectivityFlow.launchIn(viewModelScope)
     }
 
+    fun openGif(gifItem: GifUiItem) {
+        viewModelScope.launch {
+            if (_uiState.value.isNetworkConnected == true) {
+                _uiState.update { it.copy(selectedGif = gifItem, navigateToGifDetailsEvent = Unit) }
+            } else {
+                _uiState.update { it.copy(cannotOpenGifEvent = Unit) }
+            }
+        }
+    }
+
+    fun updateDeleteOptionPosition(isChecked: Boolean) {
+        _uiState.update { it.copy(isDeleteOptionEnabled = isChecked) }
+    }
+
+    fun handleButtonClick() {
+        if (_uiState.value.isDeleteOptionEnabled) {
+            deleteAllGifs()
+        } else {
+            loadNext()
+        }
+    }
+
     private fun isLoadingRequired(connectionStatus: Status): Boolean {
         val isNetworkAvailable = connectionStatus == Status.Available
         val wasConnectionLost = _uiState.value.isNetworkConnected?.let { !it } ?: false
@@ -74,23 +96,13 @@ class GifsViewModel @Inject constructor(
         }
     }
 
-    fun deleteAllGifs() {
+    private fun deleteAllGifs() {
         viewModelScope.launch(Dispatchers.IO) {
             getGifsUseCase.deleteGifs()
         }
     }
 
-    fun openGif(gifItem: GifUiItem) {
-        viewModelScope.launch {
-            if (_uiState.value.isNetworkConnected == true) {
-                _uiState.update { it.copy(selectedGif = gifItem, navigateToGifDetailsEvent = Unit) }
-            } else {
-                _uiState.update { it.copy(cannotOpenGifEvent = Unit) }
-            }
-        }
-    }
-
-    fun loadNext() {
+    private fun loadNext() {
         offsetFlow.value += OFFSET_INCREMENT
         loadGifs(offsetFlow.value)
     }
@@ -104,9 +116,7 @@ class GifsViewModel @Inject constructor(
     }
 
     fun consumeLoadingErrorEvent() {
-        _uiState.update {
-            it.copy(emptyGifsEvent = null, gifsLoadingErrorEvent = null)
-        }
+        _uiState.update { it.copy(emptyGifsEvent = null, gifsLoadingErrorEvent = null) }
     }
 
 }

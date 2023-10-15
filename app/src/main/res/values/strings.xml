@@ -14,5 +14,6 @@
     <string name="gif_image_content_description">Gif image</string>
     <string name="network_connection_lost">Network connection lost</string>
     <string name="empty_list_message">Gifs list is empty</string>
-    <string name="load_next_btn_text">load next</string>
+    <string name="load_next_btn_text">Load next</string>
+    <string name="options_switch_text_delete">Delete all</string>
 </resources>
