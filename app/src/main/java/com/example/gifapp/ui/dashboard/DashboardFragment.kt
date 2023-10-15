@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.FitCenter
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
@@ -99,7 +100,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         Glide.with(requireContext())
             .load(args.link)
             .listener(imageLoadListener)
-            .transform(CenterCrop(), RoundedCorners(42))
+            .transform(FitCenter(), RoundedCorners(42))
             .placeholder(R.drawable.ic_gif)
             .into(binding.gifDetailImage)
     }
