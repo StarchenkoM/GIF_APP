@@ -9,7 +9,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.gifapp.databinding.ItemGifBinding
-import com.example.gifapp.ui.home.GifUiItem
 
 private const val CORNERS_RADIUS = 22
 

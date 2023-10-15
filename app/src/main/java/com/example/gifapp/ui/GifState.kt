@@ -1,4 +1,6 @@
-package com.example.gifapp.ui.home
+package com.example.gifapp.ui
+
+import com.example.gifapp.GifUiItem
 
 data class GifState(
     val gifs: List<GifUiItem> = listOf(),

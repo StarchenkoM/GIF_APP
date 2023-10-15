@@ -1,4 +1,4 @@
-package com.example.gifapp.ui.dashboard
+package com.example.gifapp.ui
 
 import android.content.Intent
 import android.content.Intent.ACTION_SEND

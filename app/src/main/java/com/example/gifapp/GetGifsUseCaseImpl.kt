@@ -1,7 +1,6 @@
 package com.example.gifapp
 
 import android.util.Log
-import com.example.gifapp.ui.home.GifUiItem
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

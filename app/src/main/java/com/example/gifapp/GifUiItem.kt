@@ -1,4 +1,4 @@
-package com.example.gifapp.ui.home
+package com.example.gifapp
 
 data class GifUiItem(
     val title: String = "",

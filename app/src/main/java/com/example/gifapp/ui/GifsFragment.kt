@@ -1,4 +1,4 @@
-package com.example.gifapp.ui.home
+package com.example.gifapp.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.gifapp.GifAdapter
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentGifsBinding
+import com.example.gifapp.GifUiItem
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn

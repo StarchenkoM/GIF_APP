@@ -5,7 +5,6 @@ import com.example.gifapp.GifsFetchingResponse.EmptyResponseError
 import com.example.gifapp.GifsFetchingResponse.GifsFetchingSuccess
 import com.example.gifapp.GifsFetchingResponse.LoadingError
 import com.example.gifapp.database.GifsDao
-import com.example.gifapp.ui.home.GifUiItem
 import com.example.gifapp.util.mapToDataBaseEntities
 import com.example.gifapp.util.mapToUiItem
 import kotlinx.coroutines.flow.Flow

@@ -1,4 +1,4 @@
-package com.example.gifapp.ui.home
+package com.example.gifapp.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -8,6 +8,7 @@ import com.example.gifapp.GifsFetchingResponse.EmptyResponseError
 import com.example.gifapp.GifsFetchingResponse.LoadingError
 import com.example.gifapp.NetworkConnectivityObserver
 import com.example.gifapp.Status
+import com.example.gifapp.GifUiItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
