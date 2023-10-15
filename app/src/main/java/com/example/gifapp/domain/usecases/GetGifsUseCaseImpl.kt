@@ -1,6 +1,5 @@
 package com.example.gifapp.domain.usecases
 
-import android.util.Log
 import com.example.gifapp.data.repository.GifsFetchingResponse
 import com.example.gifapp.domain.GifsRepository
 import com.example.gifapp.domain.entities.GifUiItem
@@ -16,8 +15,6 @@ class GetGifsUseCaseImpl @Inject constructor(
     }
 
     override suspend fun deleteGifs() {
-        Log.i("mytag**", "USE_CASE: deleteGifs")
-//        gifsRepository.deleteSomeGifs()
         gifsRepository.deleteAllGifs()
     }
 

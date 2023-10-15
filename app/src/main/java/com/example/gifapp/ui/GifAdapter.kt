@@ -1,6 +1,5 @@
 package com.example.gifapp.ui
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,9 +7,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.gifapp.domain.entities.GifUiItem
 import com.example.gifapp.R
 import com.example.gifapp.databinding.ItemGifBinding
+import com.example.gifapp.domain.entities.GifUiItem
 
 private const val CORNERS_RADIUS = 22
 
@@ -19,8 +18,6 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var gifs: List<GifUiItem> = mutableListOf()
 
     fun setData(gifs: List<GifUiItem>) {
-        Log.i("mytag", "ADAPTER setData: gifs = ${gifs}")
-
         this.gifs = gifs
         notifyDataSetChanged()
     }
@@ -42,7 +39,6 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(gifItem: GifUiItem) {
-            Log.i("mytag", "ADAPTER bind: gifItem.gifLink = ${gifItem.link}")
             with(binding) {
                 gifTitle.text = gifItem.title
                 Glide.with(root)

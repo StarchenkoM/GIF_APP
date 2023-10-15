@@ -1,7 +1,6 @@
 package com.example.gifapp.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +15,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.gifapp.domain.entities.GifUiItem
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentGifsBinding
+import com.example.gifapp.domain.entities.GifUiItem
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -71,9 +70,6 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.onEach { uiState ->
-
-                    Log.i("mytag**", "setupObservers: emptyGifsEvent = ${uiState.emptyGifsEvent}")
-
                     setViewsVisibility(uiState)
                     adapter.setData(uiState.gifs)
                     when {

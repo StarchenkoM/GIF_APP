@@ -1,6 +1,5 @@
 package com.example.gifapp.data.repository
 
-import android.util.Log
 import com.example.gifapp.data.repository.GifsFetchingResponse.EmptyResponseError
 import com.example.gifapp.data.repository.GifsFetchingResponse.GifsFetchingSuccess
 import com.example.gifapp.data.repository.GifsFetchingResponse.LoadingError
@@ -25,18 +24,14 @@ class GifsRepositoryImpl @Inject constructor(
         }
 
     override suspend fun getGifs(offset: Int): GifsFetchingResponse {
-        Log.i("mytag*", "REPO getGifs: START")
         gifsNetSource.getGifsFromNet(offset).onSuccess { netItems ->
             return handleSuccessResponse(netItems)
         }
-        Log.i("mytag*", "REPO getGifs: END")
         return LoadingError
     }
 
     override suspend fun deleteAllGifs() {
-        Log.i("mytag*", "REPO deleteAllGifs: START")
         gifsLocalSource.deleteAllGifs()
-        Log.i("mytag*", "REPO deleteAllGifs: END")
     }
 
     private suspend fun handleSuccessResponse(netItems: List<GifNetItem>): GifsFetchingResponse {

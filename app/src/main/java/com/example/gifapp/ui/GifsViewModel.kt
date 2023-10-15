@@ -1,14 +1,13 @@
 package com.example.gifapp.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.gifapp.domain.usecases.GetGifsUseCase
 import com.example.gifapp.data.repository.GifsFetchingResponse.EmptyResponseError
 import com.example.gifapp.data.repository.GifsFetchingResponse.LoadingError
+import com.example.gifapp.domain.entities.GifUiItem
+import com.example.gifapp.domain.usecases.GetGifsUseCase
 import com.example.gifapp.util.NetworkConnectivityObserver
 import com.example.gifapp.util.Status
-import com.example.gifapp.domain.entities.GifUiItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,7 @@ private const val OFFSET_INCREMENT = 25
 @HiltViewModel
 class GifsViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase,
-    private val connectivityObserver: NetworkConnectivityObserver,
+    connectivityObserver: NetworkConnectivityObserver,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(GifState())
@@ -35,36 +34,30 @@ class GifsViewModel @Inject constructor(
 
     private val gifFlow = getGifsUseCase.gifFlow.onEach { gifs ->
         offsetFlow.value = gifs.size
-        Log.i(
-            "mytag*****",
-            "VM: gifFlow gifs.size = ${gifs.size} offsetFlow.value = ${offsetFlow.value}"
-        )
         _uiState.update { it.copy(gifs = gifs) }
         if (gifs.isEmpty()) {
             loadGifs()
         }
     }
 
-
     private val connectivityFlow = connectivityObserver.observe()
         .onEach { connectionStatus ->
-            if (isNetworkRestored(connectionStatus) && _uiState.value.gifs.isEmpty()) {
+            if (isLoadingRequired(connectionStatus)) {
                 loadGifs()
             }
             _uiState.update { it.copy(isNetworkConnected = connectionStatus == Status.Available) }
         }
 
-    private fun isNetworkRestored(connectionStatus: Status) =
-        _uiState.value.isNetworkConnected?.let { connectionStatus == Status.Available && !it }
-            ?: false
-
-
     init {
-        Log.i("mytag*****", "VM: ================================================")
-        Log.i("mytag*****", "VM: ================================================")
-        Log.i("mytag*****", "VM: ================================================")
         gifFlow.launchIn(viewModelScope)
         connectivityFlow.launchIn(viewModelScope)
+    }
+
+    private fun isLoadingRequired(connectionStatus: Status): Boolean {
+        val isNetworkAvailable = connectionStatus == Status.Available
+        val wasConnectionLost = _uiState.value.isNetworkConnected?.let { !it } ?: false
+        val isGifsListEmpty = _uiState.value.gifs.isEmpty()
+        return isNetworkAvailable && wasConnectionLost && isGifsListEmpty
     }
 
     private fun loadGifs(offset: Int = 0) {
@@ -98,9 +91,7 @@ class GifsViewModel @Inject constructor(
     }
 
     fun loadNext() {
-        Log.i("mytag*****", "VM: loadNext offset BEFORE_INCREMENT = ${offsetFlow.value}")
         offsetFlow.value += OFFSET_INCREMENT
-        Log.i("mytag*****", "VM: loadNext offset AFTER_INCREMENT = ${offsetFlow.value}")
         loadGifs(offsetFlow.value)
     }
 
