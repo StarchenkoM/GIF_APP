@@ -77,16 +77,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     adapter.setData(uiState.gifs)
                     when {
                         uiState.isCannotOpenGifEvent -> displayWarningDialog()
-                        uiState.isEmptyGifsEvent -> displaySnackbar("No gifs by this request")
-                        uiState.isGifsLoadingErrorEvent -> displaySnackbar("Gifs loading error :(\nPlease check your network connection")
-                        uiState.isNavigateToGifDetailsEvent -> manageNavigationToGifDetails(uiState.selectedGif)
+                        uiState.isEmptyGifsEvent -> showSnackbar("No gifs by this request")
+                        uiState.isGifsLoadingErrorEvent -> showSnackbar("Gifs loading error :(\nPlease check your network connection")
+                        uiState.isNavigateToGifDetailsEvent -> openGifDetails(uiState.selectedGif)
                     }
                 }.launchIn(this)
             }
         }
     }
 
-    private fun manageNavigationToGifDetails(selectedGif: GifUiItem) {
+    private fun openGifDetails(selectedGif: GifUiItem) {
         navigateToGifDetails(selectedGif.title, selectedGif.link)
         viewModel.consumeNavigateToGifDetailsEvent()
     }
@@ -127,8 +127,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         dialog?.dismiss()
     }
 
-    private fun displaySnackbar(message: String) {
-        Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    private fun showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
+        Snackbar.make(binding.root, message, duration).show()
         viewModel.consumeLoadingErrorEvent()
     }
 

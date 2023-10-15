@@ -18,4 +18,7 @@
     <color name="main_background">#80E6E3E3</color>
     <color name="accent">#009688</color>
 
+    <color name="normal_button_background_color">#FF4081</color>
+    <color name="disabled_button_background_color">#9C9B9B</color>
+
 </resources>

@@ -1,11 +1,15 @@
 package com.example.gifapp.ui.dashboard
 
 import android.content.Intent
+import android.content.Intent.ACTION_SEND
+import android.content.Intent.EXTRA_TEXT
+import android.content.Intent.createChooser
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,10 +21,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.example.gifapp.R
 import com.example.gifapp.databinding.FragmentDashboardBinding
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
@@ -28,7 +32,6 @@ import kotlin.properties.Delegates
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
 
-    // TODO: add share button
     private var binding by Delegates.notNull<FragmentDashboardBinding>()
     private val viewModel by viewModels<DashboardViewModel>()
     private val args: DashboardFragmentArgs by navArgs()
@@ -56,6 +59,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
 
+    private val shareGifChooser =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {}
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,42 +74,57 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showGif()
-        shareImageLink()
+        shareGifLink()
     }
 
     private fun showGif() {
+        setGifTitle()
+        if (args.link.isNotEmpty()) {
+            setGifImage()
+        } else {
+            displayErrorMessage()
+        }
+        binding.shareGif.isEnabled = args.link.isNotEmpty()
+    }
+
+    private fun setGifTitle() {
         if (args.title.isNotEmpty()) {
             binding.gifTitle.text = args.title
         } else {
             binding.gifTitle.isVisible = false
         }
-
-        if (args.link.isNotEmpty()) {
-            Glide.with(requireContext())
-                .load(args.link)
-                .listener(imageLoadListener)
-                .transform(CenterCrop(), RoundedCorners(42))
-                .placeholder(R.drawable.ic_gif)
-                .into(binding.gifDetailImage)
-        } else {
-            displayErrorMessage()
-        }
-
     }
 
-    // TODO: Check deprecation
-    private fun shareImageLink() {
-        if (args.link.isNotEmpty()) {
-            binding.shareGif.setOnClickListener {
-                val shareIntent = Intent().apply {
-                    this.action = Intent.ACTION_SEND
-                    this.putExtra(Intent.EXTRA_TEXT, args.link)
-                    this.type = "text/plain"
-                }
-//            binding.root.context.startActivity(Intent.createChooser(shareIntent, requireContext().getString(R.string.share_image_url)))
-                binding.root.context.startActivity(Intent.createChooser(shareIntent, "Share Gif"))
+    private fun setGifImage() {
+        Glide.with(requireContext())
+            .load(args.link)
+            .listener(imageLoadListener)
+            .transform(CenterCrop(), RoundedCorners(42))
+            .placeholder(R.drawable.ic_gif)
+            .into(binding.gifDetailImage)
+    }
+
+    private fun shareGifLink() {
+        binding.shareGif.setOnClickListener {
+            args.link.ifEmpty {
+                showSnackbar("Gif could not be shared")
+                return@setOnClickListener
             }
+            openChooser()
         }
+    }
+
+    private fun openChooser() {
+        val chooserIntent = Intent(ACTION_SEND).apply {
+            putExtra(EXTRA_TEXT, args.link)
+            type = "text/plain"
+            createChooser(this, "Share Gif")
+        }
+        shareGifChooser.launch(chooserIntent)
+    }
+
+    private fun showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
+        Snackbar.make(binding.root, message, duration).show()
     }
 
     private fun displayErrorMessage() {
