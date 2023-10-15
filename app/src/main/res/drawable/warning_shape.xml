@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/warning_background" />
+    <solid android:color="@color/warning" />
       <stroke android:width="3dp" android:color="@color/additional_background" />
     <corners android:radius="19dp" />
     <padding

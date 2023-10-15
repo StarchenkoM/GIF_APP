@@ -25,7 +25,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
-
 private const val GRID_SPAN_COUNT = 2
 
 @AndroidEntryPoint

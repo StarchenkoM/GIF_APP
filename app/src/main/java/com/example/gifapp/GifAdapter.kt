@@ -8,9 +8,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.example.gifapp.databinding.ItemGifBinding
 import com.example.gifapp.ui.home.GifUiItem
+
+private const val CORNERS_RADIUS = 22
 
 class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var onItemClicked: ((GifUiItem) -> Unit)? = null
@@ -47,7 +48,7 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 //                    .load(gifItem.link) //TODO UNCOMMENT
                     .load(R.drawable.ic_gif)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .transform(CenterCrop(), RoundedCorners(22))
+                    .transform(CenterCrop(), RoundedCorners(CORNERS_RADIUS))
                     .placeholder(R.drawable.ic_gif)
                     .into(gifImage)
             }

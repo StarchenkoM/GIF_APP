@@ -10,7 +10,7 @@
     <TextView
         android:id="@+id/connection_lost_warning"
         android:layout_width="0dp"
-        android:layout_height="@dimen/search_height"
+        android:layout_height="@dimen/warning_height"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="16dp"
         android:background="@drawable/warning_shape"
@@ -74,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:elevation="1dp"
+        android:elevation="@dimen/elevation"
         android:visibility="gone"
         app:constraint_referenced_ids="loader_view, loader_background"
         tools:visibility="visible" />
@@ -85,14 +85,14 @@
         android:layout_height="match_parent"
         android:alpha="0.5"
         android:background="#979494"
-        android:elevation="1dp" />
+        android:elevation="@dimen/elevation" />
 
     <ProgressBar
         android:id="@+id/loader_view"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        android:elevation="1dp"
+        android:elevation="@dimen/elevation"
         android:indeterminateTint="@color/additional_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
