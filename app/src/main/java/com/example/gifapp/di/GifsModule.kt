@@ -8,6 +8,8 @@ import com.example.gifapp.domain.GifsRepository
 import com.example.gifapp.data.repository.GifsRepositoryImpl
 import com.example.gifapp.data.api.GifsApi
 import com.example.gifapp.data.database.GifsDao
+import com.example.gifapp.data.datasource.GifsLocalSourceImpl
+import com.example.gifapp.data.repository.GifsLocalSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,11 +26,13 @@ class GifsModule {
     @Provides
     fun provideGifsRepository(
         gifsNetSource: GifsNetSource,
-        gifsDao: GifsDao,
-    ): GifsRepository =
-        GifsRepositoryImpl(gifsNetSource, gifsDao)
+        gifsLocalSource: GifsLocalSource,
+    ): GifsRepository = GifsRepositoryImpl(gifsNetSource, gifsLocalSource)
 
     @Provides
     fun provideGifsNetSource(gifsApi: GifsApi): GifsNetSource = GifsNetSourceImpl(gifsApi)
+
+    @Provides
+    fun provideGifsLocalSource(gifsDao: GifsDao): GifsLocalSource = GifsLocalSourceImpl(gifsDao)
 
 }
