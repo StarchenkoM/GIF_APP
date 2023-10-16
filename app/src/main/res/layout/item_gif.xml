@@ -18,7 +18,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textAllCaps="false"
-        android:textColor="@color/text2"
+        android:textColor="@color/text3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

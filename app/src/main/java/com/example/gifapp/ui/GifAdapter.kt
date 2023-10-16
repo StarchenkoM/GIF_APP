@@ -42,8 +42,7 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             with(binding) {
                 gifTitle.text = gifItem.title
                 Glide.with(root)
-//                    .load(gifItem.link) //TODO UNCOMMENT
-                    .load(R.drawable.ic_gif)
+                    .load(gifItem.link)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transform(CenterCrop(), RoundedCorners(CORNERS_RADIUS))
                     .placeholder(R.drawable.ic_gif)
