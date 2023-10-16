@@ -1,5 +1,6 @@
 package com.example.gifapp.ui
 
+import android.content.res.Configuration.ORIENTATION_LANDSCAPE
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,8 +25,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
-
-private const val GRID_SPAN_COUNT = 2
 
 @AndroidEntryPoint
 class GifsFragment : Fragment(R.layout.fragment_gifs) {
@@ -66,9 +65,14 @@ class GifsFragment : Fragment(R.layout.fragment_gifs) {
     }
 
     private fun initAdapter() {
-        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), GRID_SPAN_COUNT)
+        binding.recyclerGif.layoutManager = GridLayoutManager(requireContext(), getGridSpanCount())
         binding.recyclerGif.adapter = adapter
         adapter.onItemClicked = { gifItem -> viewModel.openGif(gifItem) }
+    }
+
+    private fun getGridSpanCount(): Int {
+        val orientation = resources.configuration.orientation
+        return if (orientation == ORIENTATION_LANDSCAPE) 3 else 2
     }
 
     private fun initListeners() {
