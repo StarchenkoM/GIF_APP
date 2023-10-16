@@ -11,14 +11,16 @@
     <color name="text3">#292828</color>
 
     <color name="warning">#FFC0CB</color>
-    <color name="warning_background">#F1D61F</color>
+    <color name="warning_2">#F1D61F</color>
     <color name="launcher_background">#4AF610</color>
-    <color name="additional_background">#378332</color>
+    <color name="additional">#378332</color>
+    <color name="additional_light">#6F9F6C</color>
     <color name="loading_background">#979494</color>
     <color name="main_background">#80E6E3E3</color>
     <color name="accent">#009688</color>
 
     <color name="normal_button_background_color">#FF4081</color>
-    <color name="disabled_button_background_color">#9C9B9B</color>
+    <color name="disabled_heavy_color">#717171</color>
+    <color name="disabled_color">#AEACAC</color>
 
 </resources>

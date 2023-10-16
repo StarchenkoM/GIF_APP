@@ -57,16 +57,13 @@
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/options_switch"
+                style="@style/GifSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="@dimen/margin_medium"
                 android:text="@string/options_switch_text_delete"
                 android:textSize="@dimen/text_button" />
-            <!--todo check color-->
-<!--            app:thumbTint="@color/gif_button_background"-->
-<!--            app:trackTint="@color/gif_button_background"-->
-
 
         </LinearLayout>
 
@@ -96,7 +93,7 @@
         android:layout_height="@dimen/progress_bar_size"
         android:layout_gravity="center"
         android:elevation="@dimen/elevation"
-        android:indeterminateTint="@color/additional_background"
+        android:indeterminateTint="@color/additional"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
