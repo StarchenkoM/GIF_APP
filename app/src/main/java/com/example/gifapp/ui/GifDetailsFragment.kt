@@ -29,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class GifDetailsFragment : Fragment(R.layout.fragment_gif_details) {
+class GifDetailsFragment : Fragment() {
 
     private var binding by Delegates.notNull<FragmentGifDetailsBinding>()
     private val args: GifDetailsFragmentArgs by navArgs()

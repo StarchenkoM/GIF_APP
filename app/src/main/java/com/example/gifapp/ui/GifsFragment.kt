@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlin.properties.Delegates
 
 @AndroidEntryPoint
-class GifsFragment : Fragment(R.layout.fragment_gifs) {
+class GifsFragment : Fragment() {
 
     private var binding by Delegates.notNull<FragmentGifsBinding>()
     private val viewModel by viewModels<GifsViewModel>()
