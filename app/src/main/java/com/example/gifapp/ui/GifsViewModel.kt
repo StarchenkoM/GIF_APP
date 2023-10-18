@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.gifapp.data.repository.GifsFetchingResponse.EmptyResponseError
 import com.example.gifapp.data.repository.GifsFetchingResponse.LoadingError
 import com.example.gifapp.domain.entities.GifUiItem
+import com.example.gifapp.domain.usecases.DeleteGifsUseCase
 import com.example.gifapp.domain.usecases.GetGifsUseCase
 import com.example.gifapp.util.NetworkConnectivityObserver
 import com.example.gifapp.util.Status
@@ -24,6 +25,7 @@ private const val OFFSET_INCREMENT = 25
 @HiltViewModel
 class GifsViewModel @Inject constructor(
     private val getGifsUseCase: GetGifsUseCase,
+    private val deleteGifsUseCase: DeleteGifsUseCase,
     connectivityObserver: NetworkConnectivityObserver,
 ) : ViewModel() {
 
@@ -98,7 +100,7 @@ class GifsViewModel @Inject constructor(
 
     private fun deleteAllGifs() {
         viewModelScope.launch(Dispatchers.IO) {
-            getGifsUseCase.deleteGifs()
+            deleteGifsUseCase.deleteGifs()
         }
     }
 

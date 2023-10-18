@@ -14,10 +14,6 @@ class GetGifsUseCaseImpl @Inject constructor(
         return gifsRepository.getGifs(offset)
     }
 
-    override suspend fun deleteGifs() {
-        gifsRepository.deleteAllGifs()
-    }
-
     override val gifFlow: Flow<List<GifUiItem>>
         get() = gifsRepository.gifFlow
 }

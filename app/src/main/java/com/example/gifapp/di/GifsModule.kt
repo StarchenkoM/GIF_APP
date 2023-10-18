@@ -10,6 +10,8 @@ import com.example.gifapp.data.api.GifsApi
 import com.example.gifapp.data.database.GifsDao
 import com.example.gifapp.data.datasource.GifsLocalSourceImpl
 import com.example.gifapp.data.repository.GifsLocalSource
+import com.example.gifapp.domain.usecases.DeleteGifsUseCase
+import com.example.gifapp.domain.usecases.DeleteGifsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +24,10 @@ class GifsModule {
     @Provides
     fun provideGetGifsUseCase(gifsRepository: GifsRepository): GetGifsUseCase =
         GetGifsUseCaseImpl(gifsRepository)
+
+    @Provides
+    fun provideDeleteGifsUseCase(gifsRepository: GifsRepository): DeleteGifsUseCase =
+        DeleteGifsUseCaseImpl(gifsRepository)
 
     @Provides
     fun provideGifsRepository(
