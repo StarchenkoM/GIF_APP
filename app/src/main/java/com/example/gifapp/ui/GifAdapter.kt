@@ -13,7 +13,7 @@ import com.example.gifapp.domain.entities.GifUiItem
 
 private const val CORNERS_RADIUS = 22
 
-class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GifAdapter : RecyclerView.Adapter<GifAdapter.GifsViewHolder>() {
     var onItemClicked: ((GifUiItem) -> Unit)? = null
     private var gifs: List<GifUiItem> = mutableListOf()
 
@@ -22,19 +22,19 @@ class GifAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifssViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GifsViewHolder {
         val binding = ItemGifBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GifssViewHolder(binding)
+        return GifsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: GifsViewHolder, position: Int) {
         val gifItem = gifs[position]
-        (holder as GifssViewHolder).bind(gifItem)
+        holder.bind(gifItem)
     }
 
     override fun getItemCount(): Int = gifs.size
 
-    inner class GifssViewHolder(
+    inner class GifsViewHolder(
         private val binding: ItemGifBinding,
     ) : RecyclerView.ViewHolder(binding.root) {
 
