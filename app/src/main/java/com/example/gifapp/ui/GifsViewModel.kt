@@ -32,10 +32,10 @@ class GifsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GifState())
     val uiState: StateFlow<GifState> = _uiState.asStateFlow()
 
-    private val offsetFlow = MutableStateFlow(0)
+    private var offset = 0
 
     private val gifFlow = getGifsUseCase.gifFlow.onEach { gifs ->
-        offsetFlow.value = gifs.size
+        offset = gifs.size
         _uiState.update { it.copy(gifs = gifs) }
         if (gifs.isEmpty()) {
             loadGifs()
@@ -105,8 +105,8 @@ class GifsViewModel @Inject constructor(
     }
 
     private fun loadNext() {
-        offsetFlow.value += OFFSET_INCREMENT
-        loadGifs(offsetFlow.value)
+        offset += OFFSET_INCREMENT
+        loadGifs(offset)
     }
 
     fun consumeNavigateToGifDetailsEvent() {
